@@ -9,22 +9,22 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Sep 18 23:51:38 2017 (-0500)
-#           By: yulu
-#     Update #: 98
+# Last-Updated: Tue Sep 19 18:36:44 2017 (-0500)
+#           By: superlu
+#     Update #: 109
 # 
 
 
 #from Constant import *    
 #from TransitionStrength import *
-
+import numpy as np 
 class optPumping:
-    groundF1Pop = [0, 0, 0]
-    groundF2Pop = [0, 0, 0, 0, 0]
-    excitedF0Pop = [0]
-    excitedF1Pop = [0, 0, 0]
-    excitedF2Pop = [0, 0, 0, 0, 0]
-    excitedF3Pop = [0, 0, 0, 0, 0, 0, 0]
+    groundF1Pop = np.array([0, 0, 0])
+    groundF2Pop = np.array([0, 0, 0, 0, 0])
+    excitedF0Pop = np.array([0])
+    excitedF1Pop = np.array([0, 0, 0])
+    excitedF2Pop = np.array([0, 0, 0, 0, 0])
+    excitedF3Pop = np.array([0, 0, 0, 0, 0, 0, 0])
     
     def __init__(self, TransStrength, DecayStrength, pumpPol):
 
@@ -75,11 +75,11 @@ class optPumping:
         newG1 = G1
         newG2 = G2 
         for i in range(0, 4):
-            newG1 += - self.vectorizeMatrix(eval("self.pumpMatrix.F1_D2_F" + str(i))).T * G1\
-                     + eval('E' + str(i)) * eval("self.decayMatrix.sigmaPlus.F" + str(i)+ "_D2_F1")\
-                     + eval('E' + str(i)) * eval("self.decayMatrix.sigmaMinus.F" + str(i)+ "_D2_F1")\
-                     + eval('E' + str(i)) * eval("self.decayMatrix.pi.F" + str(i)+ "_D2_F1")
-                     
+            newG1 += - np.dot(self.vectorizeMatrix(eval("self.pumpMatrix.F1_D2_F" + str(i))).T,  G1)
+                     #+ np.dot(eval('E' + str(i)), eval("self.decayMatrix.sigmaPlus.F" + str(i)+ "_D2_F1"))\
+                     #+ np.dot(eval('E' + str(i)), eval("self.decayMatrix.sigmaMinus.F" + str(i)+ "_D2_F1"))\
+                     #+ np.dot(eval('E' + str(i)), eval("self.decayMatrix.pi.F" + str(i)+ "_D2_F1"))
+            print(newG1)
             newG2 += - self.vectorizeMatrix(eval("self.pumpMatrix.F2_D2_F" + str(i))).T * G2\
                      + eval('E' + str(i)) * eval("self.decayMatrix.sigmaPlus.F" + str(i)+ "_D2_F2")\
                      + eval('E' + str(i)) * eval("self.decayMatrix.sigmaMinus.F" + str(i)+ "_D2_F2")\
@@ -109,8 +109,7 @@ class optPumping:
         newE3 = E3 + newE3 * self.dipoleFactor * dt
         return(newE0, newE1, newE2, newE3)
     
-                
-            
+    
         
         
 
