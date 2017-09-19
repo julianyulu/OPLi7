@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Sun Sep 17 23:20:36 2017 (-0500)
+# Last-Updated: Mon Sep 18 23:51:38 2017 (-0500)
 #           By: yulu
-#     Update #: 58
+#     Update #: 98
 # 
 
 
@@ -30,7 +30,7 @@ class optPumping:
 
         # Initialize pump matrix 
         try:
-            self.pumpMatrix = eval('TransStrength.' + pumpPol)
+            self.pumpMatrix = eval('TransStrength.' + pumpPol) # select pumping matrix based on polarization
         except AttributeError:
             print("Incorrect polorization name, please chose one of the following:\n\
             sigmaPlus; sigmaMinux, pi\n")
@@ -54,37 +54,63 @@ class optPumping:
             self.groundF2Pop[i] = 0.5 / l2
 
         # Calculate overal factor for dipole matrix
-        self.dipoleFactor = dipoleFactor(self.decayMatrix)
+        self.dipoleFactor = self.dipoleScaleFactor()
 
         
-    def dipoleFactor(DecayStrength): # For D2 line only at this moment
+    def dipoleScaleFactor(self): # For D2 line only at this moment
         totTransElement  = 0 # For Li D2, should be 960, use for unit test 
-        for trans in DecayStrength.transition:
-            for pol in DecayStrength.polarization:
+        for trans in self.decayMatrix.transition:
+            for pol in self.decayMatrix.polarization:
                 totTransElement = totTransElement + \
-                                  eval('DecayStrength.' + pol + '.' + trans + '.sum()');
+                                  eval('self.decayMatrix.' + pol + '.' + trans + '.sum()');
         from Constant import gamma 
         factor  = gamma / totTransElement
         return factor
 
     
-    def vectorizeMatrix(mtx): # accumulate matrix columns to rows 
+    def vectorizeMatrix(self,mtx): # accumulate matrix columns to rows 
         return mtx.sum(axis = 1)
 
-    def calGroundPop(self, G1,G2, E0, E1, E2, E3, E4, dt):
-        minus1 = minus2 = plus1 = plus2 = 0
-        for i range(0, 4):
-            # pump / decay factor for ground F1 (G1) level
-            minus1 += vectorizeMatrix(eval("self.pumpMatrix.F1_D2_F" + i ))
-            plus1 += eval('E' + i) * eval("self.decayMatrix.sigmaPlus.F" + i + "_D2_F1")
-            # pump / decay factor for ground F2 (G2) level
-            minus2 += vectorizeMatrix(eval("self.pumpMatrix.F2_D2_F" + i ))
-            plus2 += eval('E' + i) * eval("self.decayMatrix.sigmaPlus.F" + i + "_D2_F2")
-        newG1 = G1 + (- minus1.T * G1 + plus1) * self.dipoleFactor * dt
-        newG2 = G2 + (- minus2.T * G2 + plus2) * self.dipoleFactor * dt
+    def calGroundPop(self, G1,G2, E0, E1, E2, E3, dt):
+        newG1 = G1
+        newG2 = G2 
+        for i in range(0, 4):
+            newG1 += - self.vectorizeMatrix(eval("self.pumpMatrix.F1_D2_F" + str(i))).T * G1\
+                     + eval('E' + str(i)) * eval("self.decayMatrix.sigmaPlus.F" + str(i)+ "_D2_F1")\
+                     + eval('E' + str(i)) * eval("self.decayMatrix.sigmaMinus.F" + str(i)+ "_D2_F1")\
+                     + eval('E' + str(i)) * eval("self.decayMatrix.pi.F" + str(i)+ "_D2_F1")
+                     
+            newG2 += - self.vectorizeMatrix(eval("self.pumpMatrix.F2_D2_F" + str(i))).T * G2\
+                     + eval('E' + str(i)) * eval("self.decayMatrix.sigmaPlus.F" + str(i)+ "_D2_F2")\
+                     + eval('E' + str(i)) * eval("self.decayMatrix.sigmaMinus.F" + str(i)+ "_D2_F2")\
+                     + eval('E' + str(i)) * eval("self.decayMatrix.pi.F" + str(i)+ "_D2_F2")
+        
+        newG1 = newG1 * self.dipoleFactor * dt
+        newG2 = newG2 * self.dipoleFactor * dt
         return (G1, G2)
 
+    def calExcietedPop(self, G1, G2, E0, E1, E2, E3, dt):
+        newE0 = newE1 = newE2 = newE3 = newE4 = 0
+        
+        for p in self.pol: # Loop thru polarization
+            for g in range(1, 3): # Loop thru ground state
+                 # pump from ground states to E0 -  decay to ground states from E0
+                newE0  += eval("G" + str(g)) * eval("self.pumpMatrix." + p + ".F" + str(g) + "_D2_F0")\
+                          - self.vectorizeMatrix(eval("self.decayMatrix." + p + ".F0_D2_F" + str(g))).T * E0 
+                newE1  += eval("G" + str(g)) * eval("self.pumpMatrix." + p + ".F" + str(g) + "_D2_F1")\
+                          - self.vectorizeMatrix(eval("self.decayMatrix." + p + ".F1_D2_F" + str(g))).T * E1 
+                newE2  += eval("G" + str(g)) * eval("self.pumpMatrix." + p + ".F" + str(g) + "_D2_F2")\
+                          - self.vectorizeMatrix(eval("self.decayMatrix." + p + ".F2_D2_F" + str(g))).T * E2
+                newE3  += eval("G" + str(g)) * eval("self.pumpMatrix." + p + ".F" + str(g) + "_D2_F3")\
+                          - self.vectorizeMatrix(eval("self.decayMatrix." + p + ".F3_D2_F" + str(g))).T * E3
+        newE0 = E0 + newE0 * self.dipoleFactor * dt
+        newE1 = E1 + newE1 * self.dipoleFactor * dt
+        newE2 = E2 + newE2 * self.dipoleFactor * dt
+        newE3 = E3 + newE3 * self.dipoleFactor * dt
+        return(newE0, newE1, newE2, newE3)
     
+                
+            
         
         
 
