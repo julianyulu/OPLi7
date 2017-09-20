@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 13:02:52 2017 (-0500)
 # Version: 
-# Last-Updated: Sun Sep 17 16:54:27 2017 (-0500)
+# Last-Updated: Tue Sep 19 22:17:55 2017 (-0500)
 #           By: yulu
-#     Update #: 18
+#     Update #: 20
 # 
 
 
@@ -136,7 +136,7 @@ TransStrength.sigmaMinus.F2_D2_F3 = np.array([
 #-------------------------------------------------------------
 
 # F1 -- D2 --> F'x     
-TransStrength.pi.F1_D2_F0 = np.array([[0, 20, 0]])
+TransStrength.pi.F1_D2_F0 = np.array([[0], [20], [0]])
 TransStrength.pi.F1_D2_F1 = np.array([
     [25, 0, 0],
     [0, 0, 0],
