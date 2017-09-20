@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Tue Sep 19 22:45:27 2017 (-0500)
-#           By: yulu
-#     Update #: 126
+# Last-Updated: Wed Sep 20 15:32:36 2017 (-0500)
+#           By: superlu
+#     Update #: 127
 # 
 
 
@@ -117,9 +117,4 @@ class optPumping:
         return(newE0, newE1, newE2, newE3)
     
     
-        
-        
-
-    
-        
     
