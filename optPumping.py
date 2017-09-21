@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Wed Sep 20 15:32:36 2017 (-0500)
+# Last-Updated: Wed Sep 20 19:17:02 2017 (-0500)
 #           By: superlu
-#     Update #: 127
+#     Update #: 151
 # 
 
 
@@ -53,12 +53,13 @@ class optPumping:
         self.excitedF3Pop = np.zeros([1,7])
 
         
-        l1 = len(self.groundF1Pop)
-        l2 = len(self.groundF2Pop)
+        l1 = len(self.groundF1Pop[0])
+        l2 = len(self.groundF2Pop[0])
+        
         for i in range(l1):
-            self.groundF1Pop[i] = 0.5 / l1
+            self.groundF1Pop[0,i] = 0.5 / l1
         for i in range(l2):
-            self.groundF2Pop[i] = 0.5 / l2
+            self.groundF2Pop[0,i] = 0.5 / l2
 
         # Calculate overal factor for dipole matrix
         self.dipoleFactor = self.dipoleScaleFactor()
@@ -79,26 +80,31 @@ class optPumping:
         return mtx.sum(axis = 1)
 
     def calGroundPop(self, G1,G2, E0, E1, E2, E3, dt):
-        newG1 = 0
-        newG2 = 0
-        for i in range(0, 4): # Loop thru all excited states 
+        #print(E0)
+        newG1 = np.zeros([1, len(G1[0])])
+        newG2 = np.zeros([1, len(G2[0])])
+        
+        for i in range(0, 4): # Loop thru all excited states
             newG1 += -self.vectorizeMatrix(eval("self.pumpMatrix.F1_D2_F" + str(i))).T * G1\
                      + np.dot(eval('E' + str(i)), eval("self.decayMatrix.sigmaPlus.F" + str(i)+ "_D2_F1"))\
                      + np.dot(eval('E' + str(i)), eval("self.decayMatrix.sigmaMinus.F" + str(i)+ "_D2_F1"))\
                      + np.dot(eval('E' + str(i)), eval("self.decayMatrix.pi.F" + str(i)+ "_D2_F1"))
-            print(newG1)
+
             newG2 += - self.vectorizeMatrix(eval("self.pumpMatrix.F2_D2_F" + str(i))).T * G2\
-                     + np.dot(eval('E' + str(i)),  eval("self.decayMatrix.sigmaPlus.F" + str(i)+ "_D2_F2"))\
-                     + np.dot(eval('E' + str(i)),  eval("self.decayMatrix.sigmaMinus.F" + str(i)+ "_D2_F2"))\
-                     + np.dot(eval('E' + str(i)),  eval("self.decayMatrix.pi.F" + str(i)+ "_D2_F2"))
+                     + np.dot(eval('E' + str(i)), eval("self.decayMatrix.sigmaPlus.F" + str(i)+ "_D2_F2"))\
+                     + np.dot(eval('E' + str(i)), eval("self.decayMatrix.sigmaMinus.F" + str(i)+ "_D2_F2"))\
+                     + np.dot(eval('E' + str(i)), eval("self.decayMatrix.pi.F" + str(i)+ "_D2_F2"))
         
         newG1 = G1 + newG1 * self.dipoleFactor * dt
         newG2 = G2 + newG2 * self.dipoleFactor * dt
-        return (G1, G2)
+        return (newG1, newG2)
 
     def calExcietedPop(self, G1, G2, E0, E1, E2, E3, dt):
-        newE0 = newE1 = newE2 = newE3 = newE4 = 0
         
+        newE0 = np.zeros([1, len(E0[0])])
+        newE1= np.zeros([1, len(E1[0])])
+        newE2 = np.zeros([1, len(E2[0])])
+        newE3 = np.zeros([1, len(E3[0])])
         for p in self.pol: # Loop thru polarization
             for g in range(1, 3): # Loop thru ground state
                 # pump from ground states to E0 -  decay to ground states from E0, /3 is for repeating sum
