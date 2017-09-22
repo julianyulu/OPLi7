@@ -9,9 +9,9 @@
 # 
 # Created: Wed Sep 20 15:34:21 2017 (-0500)
 # Version: 
-# Last-Updated: Wed Sep 20 23:53:18 2017 (-0500)
+# Last-Updated: Thu Sep 21 23:48:00 2017 (-0500)
 #           By: yulu
-#     Update #: 82
+#     Update #: 141
 # 
 
 
@@ -21,6 +21,7 @@ from Constant import dt, totalTime, polorization1, polorization2, I1, I2
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
+from cycler import cycler
 
 def main():
     global dt, totalTime, TransStrength, DecayStrength, pumpBeamPolarization, I1, I2
@@ -58,45 +59,70 @@ def main():
     clock = np.linspace(0, totalTime, numSteps) * 1e9
 
     
-    matplotlib.rcParams.update({
-        'lines.markersize': 5
-        })
-    
+    #matplotlib.rcParams.update({
+    #    'lines.markersize': 5
+    #    })
+
+        
+    lw = 3
     fig1 = plt.figure(1)
     ax1 = fig1.add_subplot(111)
-    ax1.plot(clock, [x[0][0] for x in popG1], "*", label = 'F = 1, m = -1')
-    ax1.plot(clock, [x[0][1] for x in popG1], "*", label = 'F = 1, m = 0')
-    ax1.plot(clock, [x[0][2] for x in popG1], "*", label = 'F = 1, m = 1')
-    ax1.plot(clock, [x[0][0] for x in popG2], "*", label = 'F = 2, m = -2')
-    ax1.plot(clock, [x[0][1] for x in popG2], "*", label = 'F = 2, m = -1')
-    ax1.plot(clock, [x[0][2] for x in popG2], "*", label = 'F = 2, m = 0')
-    ax1.plot(clock, [x[0][3] for x in popG2], "*", label = 'F = 2, m = 1')
-    ax1.plot(clock, [x[0][4] for x in popG2], "*", label = 'F = 2, m = 2')
+    ax1.plot(clock, [x[0][0] for x in popG1], "-", label = 'F = 1, m = -1', linewidth = lw)
+    ax1.plot(clock, [x[0][1] for x in popG1], "-", label = 'F = 1, m = 0', linewidth = lw)
+    ax1.plot(clock, [x[0][2] for x in popG1], "-", label = 'F = 1, m = 1', linewidth = lw)
+    ax1.plot(clock, [x[0][0] for x in popG2], "-", label = 'F = 2, m = -2', linewidth = lw)
+    ax1.plot(clock, [x[0][1] for x in popG2], "-", label = 'F = 2, m = -1', linewidth = lw)
+    ax1.plot(clock, [x[0][2] for x in popG2], "-", label = 'F = 2, m = 0', linewidth = lw)
+    ax1.plot(clock, [x[0][3] for x in popG2], "-", label = 'F = 2, m = 1', linewidth = lw)
+    ax1.plot(clock, [x[0][4] for x in popG2], "-", label = 'F = 2, m = 2', linewidth = lw)
     ax1.legend()
     
+
     
     fig2 = plt.figure(2)
     ax2 = fig2.add_subplot(111)
-    ax2.plot(clock, [x[0][0] for x in popE0], "*", label = "F = 0, m = 0")
-    ax2.plot(clock, [x[0][0] for x in popE1], "*", label = "F = 1, m = -1")
-    ax2.plot(clock, [x[0][1] for x in popE1], "*", label = "F = 1, m = 0")
-    ax2.plot(clock, [x[0][2] for x in popE1], "*", label = "F = 1, m = 1")
-    ax2.plot(clock, [x[0][0] for x in popE2], "*", label = "F = 2, m = -2")
-    ax2.plot(clock, [x[0][1] for x in popE2], "*", label = "F = 2, m = -1")
-    ax2.plot(clock, [x[0][2] for x in popE2], "*", label = "F = 2, m = 0")
-    ax2.plot(clock, [x[0][3] for x in popE2], "*", label = "F = 2, m = 1")
-    ax2.plot(clock, [x[0][4] for x in popE2], "*", label = "F = 2, m = 2")
-    ax2.plot(clock, [x[0][0] for x in popE3], "*", label = "F = 3, m = -3")
-    ax2.plot(clock, [x[0][1] for x in popE3], "*", label = "F = 2, m = -2")
-    ax2.plot(clock, [x[0][2] for x in popE3], "*", label = "F = 2, m = -1")
-    ax2.plot(clock, [x[0][3] for x in popE3], "*", label = "F = 2, m = 0")
-    ax2.plot(clock, [x[0][4] for x in popE3], "*", label = "F = 2, m = 1")
-    ax2.plot(clock, [x[0][5] for x in popE3], "*", label = "F = 2, m = 2")
-    ax2.plot(clock, [x[0][6] for x in popE3], "*", label = "F = 2, m = 3")
+    #cm2 = plt.get_cmap('magma', linewidth = lw)
+    #ax2.set_prop_cycle(cycler('color', [cm2(1. * i / 16) for i in range(16)]))
+    ax2.plot(clock, [x[0][0] for x in popE0], "-", label = "F = 0, m = 0", linewidth = lw)
+    ax2.plot(clock, [x[0][0] for x in popE1], "-", label = "F = 1, m = -1", linewidth = lw)
+    ax2.plot(clock, [x[0][1] for x in popE1], "-", label = "F = 1, m = 0", linewidth = lw)
+    ax2.plot(clock, [x[0][2] for x in popE1], "-", label = "F = 1, m = 1", linewidth = lw)
+    ax2.plot(clock, [x[0][0] for x in popE2], "-", label = "F = 2, m = -2", linewidth = lw)
+    ax2.plot(clock, [x[0][1] for x in popE2], "-", label = "F = 2, m = -1", linewidth = lw)
+    ax2.plot(clock, [x[0][2] for x in popE2], "-", label = "F = 2, m = 0", linewidth = lw)
+    ax2.plot(clock, [x[0][3] for x in popE2], "-", label = "F = 2, m = 1", linewidth = lw)
+    ax2.plot(clock, [x[0][4] for x in popE2], "-", label = "F = 2, m = 2", linewidth = lw)
+    ax2.plot(clock, [x[0][0] for x in popE3], "-", label = "F = 3, m = -3", linewidth = lw)
+    ax2.plot(clock, [x[0][1] for x in popE3], "-", label = "F = 3, m = -2", linewidth = lw)
+    ax2.plot(clock, [x[0][2] for x in popE3], "-", label = "F = 3, m = -1", linewidth = lw)
+    ax2.plot(clock, [x[0][3] for x in popE3], "-", label = "F = 3, m = 0", linewidth = lw)
+    ax2.plot(clock, [x[0][4] for x in popE3], "-", label = "F = 3, m = 1", linewidth = lw)
+    ax2.plot(clock, [x[0][5] for x in popE3], "-", label = "F = 3, m = 2", linewidth = lw)
+    ax2.plot(clock, [x[0][6] for x in popE3], "-", label = "F = 3, m = 3", linewidth = lw)
+
+    '''
+    ax2.plot(clock, [x[0][0] for x in popE0], "-", label = "F = 0, m = 0", linewidth = lw)
+    ax2.plot(clock, [x[0][0] for x in popE1], ":", label = "F = 1, m = -1", linewidth = lw)
+    ax2.plot(clock, [x[0][1] for x in popE1], ":", label = "F = 1, m = 0", linewidth = lw)
+    ax2.plot(clock, [x[0][2] for x in popE1], ":", label = "F = 1, m = 1", linewidth = lw)
+    ax2.plot(clock, [x[0][0] for x in popE2], "-.", label = "F = 2, m = -2", linewidth = lw)
+    ax2.plot(clock, [x[0][1] for x in popE2], "-.", label = "F = 2, m = -1", linewidth = lw)
+    ax2.plot(clock, [x[0][2] for x in popE2], "-.", label = "F = 2, m = 0", linewidth = lw)
+    ax2.plot(clock, [x[0][3] for x in popE2], "-.", label = "F = 2, m = 1", linewidth = lw)
+    ax2.plot(clock, [x[0][4] for x in popE2], "-.", label = "F = 2, m = 2", linewidth = lw)
+    ax2.plot(clock, [x[0][0] for x in popE3], "--", label = "F = 3, m = -3", linewidth = lw)
+    ax2.plot(clock, [x[0][1] for x in popE3], "--", label = "F = 3, m = -2", linewidth = lw)
+    ax2.plot(clock, [x[0][2] for x in popE3], "--", label = "F = 3, m = -1", linewidth = lw)
+    ax2.plot(clock, [x[0][3] for x in popE3], "--", label = "F = 3, m = 0", linewidth = lw)
+    ax2.plot(clock, [x[0][4] for x in popE3], "--", label = "F = 3, m = 1", linewidth = lw)
+    ax2.plot(clock, [x[0][5] for x in popE3], "--", label = "F = 3, m = 2", linewidth = lw)
+    ax2.plot(clock, [x[0][6] for x in popE3], "--", label = "F = 3, m = 3", linewidth = lw)
+    '''
     ax2.legend()
+    
     #fig.savefig("./test.png")
     plt.show()
-    matplotlib.rcdefaults()
+    #matplotlib.rcdefaults()
     print("done")
 
 if __name__ == "__main__":

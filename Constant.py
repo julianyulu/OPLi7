@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 15:57:32 2017 (-0500)
 # Version: 
-# Last-Updated: Wed Sep 20 23:11:05 2017 (-0500)
+# Last-Updated: Thu Sep 21 23:26:30 2017 (-0500)
 #           By: yulu
-#     Update #: 18
+#     Update #: 24
 # 
 
 
@@ -23,4 +23,4 @@ totalTime = 5000 * dt
 I1 = 1
 I2 = 0
 polorization1 = "pi"
-polorization2 = "sigmaPlus"
+polorization2 = "pi"
