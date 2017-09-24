@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 13:02:52 2017 (-0500)
 # Version: 
-# Last-Updated: Tue Sep 19 22:17:55 2017 (-0500)
+# Last-Updated: Sun Sep 24 15:43:48 2017 (-0500)
 #           By: yulu
-#     Update #: 20
+#     Update #: 22
 # 
 
 
@@ -43,7 +43,7 @@ class DecayStrength:
         pass
     class pi:
         pass
-    
+
 # ===================
 # Pumping Transitions
 # ===================

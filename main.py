@@ -9,9 +9,9 @@
 # 
 # Created: Wed Sep 20 15:34:21 2017 (-0500)
 # Version: 
-# Last-Updated: Thu Sep 21 23:48:00 2017 (-0500)
+# Last-Updated: Sun Sep 24 16:50:32 2017 (-0500)
 #           By: yulu
-#     Update #: 141
+#     Update #: 150
 # 
 
 
@@ -55,7 +55,9 @@ def main():
         popE1.append(E1)
         popE2.append(E2)
         popE3.append(E3)
-
+        if abs(p.checkUniformity(G1,G2,E0, E1, E2, E3) - 1) > 0.1:
+            print("Total population: ", p.checkUniformity(G1,G2,E0, E1, E2, E3), " off too much")
+            return 0 
     clock = np.linspace(0, totalTime, numSteps) * 1e9
 
     
@@ -63,7 +65,16 @@ def main():
     #    'lines.markersize': 5
     #    })
 
-        
+    print(
+        'F = 1, m = -1, pop =', popG1[-1][0][0], '\n',\
+        'F = 1, m = -0, pop =', popG1[-1][0][1], '\n',\
+        'F = 1, m = 1, pop =', popG1[-1][0][2], '\n',\
+        'F = 2, m = -2, pop =', popG2[-1][0][0], '\n',\
+        'F = 2, m = -1, pop =', popG2[-1][0][1], '\n',\
+        'F = 2, m = 0, pop =', popG2[-1][0][2], '\n',\
+        'F = 2, m = 1, pop =', popG2[-1][0][3], '\n',\
+        'F = 2, m = 2, pop =', popG2[-1][0][4], '\n')
+    print("Total population: ", p.checkUniformity(G1,G2,E0, E1, E2, E3) )
     lw = 3
     fig1 = plt.figure(1)
     ax1 = fig1.add_subplot(111)
