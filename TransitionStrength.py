@@ -9,16 +9,43 @@
 # 
 # Created: Sun Sep 17 13:02:52 2017 (-0500)
 # Version: 
-# Last-Updated: Wed Sep 27 22:03:31 2017 (-0500)
+# Last-Updated: Wed Sep 27 22:48:04 2017 (-0500)
 #           By: yulu
-#     Update #: 23
+#     Update #: 32
 # 
 
 
 import numpy as np
 
-# Pumping transition 
-class TransStrength:
+# Pumping transition D1 line
+class TransStrenghtD1_toF1:
+    polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
+    transition = ['F1_D1_F1','F1_D1_F2',
+                  'F2_D1_F1','F2_D1_F2',] 
+    class sigmaPlus:
+        pass
+    class sigmaMinus:
+        pass
+    class pi:
+        pass
+
+# Decay transition D1 line
+class DecayStrengthD1_toF1:
+    polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
+    transition = ['F1_D1_F1','F1_D1_F2',
+                  'F2_D1_F1','F2_D1_F2',] 
+    class sigmaPlus:
+        pass
+    class sigmaMinus:
+        pass
+    class pi:
+        pass
+
+
+# Pumping transition D2 line
+class TransStrengthD2:
+    eStates = ['F0', 'F1', 'F2', 'F3']
+    numSubStates = [1, 3, 5, 7]
     polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
     transition = ['F1_D2_F0', 'F1_D2_F1','F1_D2_F2', 'F1_D2_F3',
                   'F2_D2_F0', 'F2_D2_F1','F2_D2_F2', 'F2_D2_F3'] 
@@ -30,8 +57,10 @@ class TransStrength:
     class pi:
         pass
 
-# Decay transition 
-class DecayStrength:
+# Decay transition D2 line
+class DecayStrengthD2:
+    eStates = ['F0', 'F1', 'F2', 'F3']
+    numSubStates = [1, 3, 5, 7]
     polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
     transition = ['F0_D2_F1', 'F0_D2_F2',
                   'F1_D2_F1', 'F1_D2_F2',
@@ -44,45 +73,52 @@ class DecayStrength:
     class pi:
         pass
 
-# ===================
-# Pumping Transitions
-# ===================
+# ===========================
+# D2 Line Pumping Transitions
+# ===========================
+
+
+
+    
+# ===========================
+# D2 Line Pumping Transitions
+# ===========================
 
 # SigmaPlus Transitions 
 #-------------------------------------------------------------
 
 # F1 -- D2 --> F'x
-TransStrength.sigmaPlus.F1_D2_F0 = np.array([[20], [0], [0]])
-TransStrength.sigmaPlus.F1_D2_F1 = np.array([
+TransStrengthD2.sigmaPlus.F1_D2_F0 = np.array([[20], [0], [0]])
+TransStrengthD2.sigmaPlus.F1_D2_F1 = np.array([
     [0, 25, 0],
     [0, 0, 25],
     [0, 0, 0]
     ])
-TransStrength.sigmaPlus.F1_D2_F2 = np.array([
+TransStrengthD2.sigmaPlus.F1_D2_F2 = np.array([
     [0, 0, 5, 0, 0],
     [0, 0, 0, 15, 0],
     [0, 0, 0, 0, 30]
     ])
-TransStrength.sigmaPlus.F1_D2_F3 = np.zeros([3, 7])
+TransStrengthD2.sigmaPlus.F1_D2_F3 = np.zeros([3, 7])
 
 
 # F2 -- D2 --> F'x 
-TransStrength.sigmaPlus.F2_D2_F0 = np.zeros([5, 1])
-TransStrength.sigmaPlus.F2_D2_F1 = np.array([
+TransStrengthD2.sigmaPlus.F2_D2_F0 = np.zeros([5, 1])
+TransStrengthD2.sigmaPlus.F2_D2_F1 = np.array([
     [6, 0, 0],
     [0, 3, 0],
     [0, 0, 1],
     [0, 0, 0],
     [0, 0, 0]
     ])
-TransStrength.sigmaPlus.F2_D2_F2 = np.array([
+TransStrengthD2.sigmaPlus.F2_D2_F2 = np.array([
     [0, 10, 0, 0, 0],
     [0, 0, 15, 0, 0],
     [0, 0, 0, 15, 0],
     [0, 0, 0, 0, 10],
     [0, 0, 0, 0, 0]
     ])
-TransStrength.sigmaPlus.F2_D2_F3 = np.array([
+TransStrengthD2.sigmaPlus.F2_D2_F3 = np.array([
     [0, 0, 4, 0, 0, 0, 0],
     [0, 0, 0, 12, 0, 0, 0],
     [0, 0, 0, 0, 24, 0, 0],
@@ -95,36 +131,36 @@ TransStrength.sigmaPlus.F2_D2_F3 = np.array([
 #-------------------------------------------------------------
 
 # F1 -- D2 --> F'x 
-TransStrength.sigmaMinus.F1_D2_F0 = np.array([[0], [0], [20]])
-TransStrength.sigmaMinus.F1_D2_F1 = np.array([
+TransStrengthD2.sigmaMinus.F1_D2_F0 = np.array([[0], [0], [20]])
+TransStrengthD2.sigmaMinus.F1_D2_F1 = np.array([
     [0, 0, 0],
     [25, 0, 0],
     [0, 25, 0]
     ])
-TransStrength.sigmaMinus.F1_D2_F2 = np.array([
+TransStrengthD2.sigmaMinus.F1_D2_F2 = np.array([
     [30, 0, 0, 0, 0],
     [0, 15, 0, 0, 0],
     [0, 0, 5, 0, 0]
     ])
-TransStrength.sigmaMinus.F1_D2_F3 = np.zeros([3, 7])
+TransStrengthD2.sigmaMinus.F1_D2_F3 = np.zeros([3, 7])
 
 # F2 -- D2 --> F'x
-TransStrength.sigmaMinus.F2_D2_F0 = np.zeros([5,1])
-TransStrength.sigmaMinus.F2_D2_F1 = np.array([
+TransStrengthD2.sigmaMinus.F2_D2_F0 = np.zeros([5,1])
+TransStrengthD2.sigmaMinus.F2_D2_F1 = np.array([
     [0, 0, 0],
     [0, 0, 0],
     [1, 0, 0],
     [0, 3, 0],
     [0, 0, 6]
     ])
-TransStrength.sigmaMinus.F2_D2_F2 = np.array([
+TransStrengthD2.sigmaMinus.F2_D2_F2 = np.array([
     [0, 0, 0, 0, 0],
     [10, 0, 0, 0, 0],
     [0, 15, 0, 0, 0],
     [0, 0, 15, 0, 0],
     [0, 0, 0, 10, 0]
     ])
-TransStrength.sigmaMinus.F2_D2_F3 = np.array([
+TransStrengthD2.sigmaMinus.F2_D2_F3 = np.array([
     [60, 0, 0, 0, 0, 0, 0],
     [0, 40, 0, 0, 0, 0, 0],
     [0, 0, 24, 0, 0, 0, 0],
@@ -136,36 +172,36 @@ TransStrength.sigmaMinus.F2_D2_F3 = np.array([
 #-------------------------------------------------------------
 
 # F1 -- D2 --> F'x     
-TransStrength.pi.F1_D2_F0 = np.array([[0], [20], [0]])
-TransStrength.pi.F1_D2_F1 = np.array([
+TransStrengthD2.pi.F1_D2_F0 = np.array([[0], [20], [0]])
+TransStrengthD2.pi.F1_D2_F1 = np.array([
     [25, 0, 0],
     [0, 0, 0],
     [0, 0, 25]
     ])
-TransStrength.pi.F1_D2_F2 = np.array([
+TransStrengthD2.pi.F1_D2_F2 = np.array([
     [0, 15, 0, 0, 0],
     [0, 0, 20, 0, 0],
     [0, 0, 0, 15, 0],
     ])
-TransStrength.pi.F1_D2_F3 = np.zeros([3, 7])
+TransStrengthD2.pi.F1_D2_F3 = np.zeros([3, 7])
 
 # F2 -- D2 --> F'x
-TransStrength.pi.F2_D2_F0 = np.zeros([5, 1])
-TransStrength.pi.F2_D2_F1 = np.array([
+TransStrengthD2.pi.F2_D2_F0 = np.zeros([5, 1])
+TransStrengthD2.pi.F2_D2_F1 = np.array([
     [0, 0, 0],
     [3, 0, 0],
     [0, 4, 0],
     [0, 0, 3],
     [0, 0, 0]
     ])
-TransStrength.pi.F2_D2_F2 = np.array([
+TransStrengthD2.pi.F2_D2_F2 = np.array([
     [20, 0, 0, 0, 0],
     [0, 5, 0, 0, 0],
     [0, 0, 0, 0, 0],
     [0, 0, 0, 5, 0],
     [0, 0, 0, 0, 20]
     ])
-TransStrength.pi.F2_D2_F3 = np.array([
+TransStrengthD2.pi.F2_D2_F3 = np.array([
     [0, 20, 0, 0, 0, 0, 0],
     [0, 0, 32, 0, 0, 0, 0],
     [0, 0, 0, 36, 0, 0, 0],
@@ -175,54 +211,54 @@ TransStrength.pi.F2_D2_F3 = np.array([
 
 
 
-# ===================
-# Decay Transitions
-# ===================
+# =========================
+# D2 Line Decay Transitions
+# =========================
 
 # SigmaPlus Decay 
 #-------------------------------------------------------------
 
 # F'x -- D2 --> F1
-DecayStrength.sigmaMinus.F0_D2_F1 = TransStrength.sigmaPlus.F1_D2_F0.T
-DecayStrength.sigmaMinus.F1_D2_F1 = TransStrength.sigmaPlus.F1_D2_F1.T
-DecayStrength.sigmaMinus.F2_D2_F1 = TransStrength.sigmaPlus.F1_D2_F2.T
-DecayStrength.sigmaMinus.F3_D2_F1 = TransStrength.sigmaPlus.F1_D2_F3.T
+DecayStrengthD2.sigmaMinus.F0_D2_F1 = TransStrengthD2.sigmaPlus.F1_D2_F0.T
+DecayStrengthD2.sigmaMinus.F1_D2_F1 = TransStrengthD2.sigmaPlus.F1_D2_F1.T
+DecayStrengthD2.sigmaMinus.F2_D2_F1 = TransStrengthD2.sigmaPlus.F1_D2_F2.T
+DecayStrengthD2.sigmaMinus.F3_D2_F1 = TransStrengthD2.sigmaPlus.F1_D2_F3.T
 
 
 # F'x -- D2 --> F2 
-DecayStrength.sigmaMinus.F0_D2_F2 = TransStrength.sigmaPlus.F2_D2_F0.T
-DecayStrength.sigmaMinus.F1_D2_F2 = TransStrength.sigmaPlus.F2_D2_F1.T
-DecayStrength.sigmaMinus.F2_D2_F2 = TransStrength.sigmaPlus.F2_D2_F2.T
-DecayStrength.sigmaMinus.F3_D2_F2 = TransStrength.sigmaPlus.F2_D2_F3.T
+DecayStrengthD2.sigmaMinus.F0_D2_F2 = TransStrengthD2.sigmaPlus.F2_D2_F0.T
+DecayStrengthD2.sigmaMinus.F1_D2_F2 = TransStrengthD2.sigmaPlus.F2_D2_F1.T
+DecayStrengthD2.sigmaMinus.F2_D2_F2 = TransStrengthD2.sigmaPlus.F2_D2_F2.T
+DecayStrengthD2.sigmaMinus.F3_D2_F2 = TransStrengthD2.sigmaPlus.F2_D2_F3.T
 
 
 # SigmaMinus Decay 
 #-------------------------------------------------------------
 
 # F'x -- D2 --> F1
-DecayStrength.sigmaPlus.F0_D2_F1 = TransStrength.sigmaMinus.F1_D2_F0.T
-DecayStrength.sigmaPlus.F1_D2_F1 = TransStrength.sigmaMinus.F1_D2_F1.T
-DecayStrength.sigmaPlus.F2_D2_F1 = TransStrength.sigmaMinus.F1_D2_F2.T
-DecayStrength.sigmaPlus.F3_D2_F1 = TransStrength.sigmaMinus.F1_D2_F3.T
+DecayStrengthD2.sigmaPlus.F0_D2_F1 = TransStrengthD2.sigmaMinus.F1_D2_F0.T
+DecayStrengthD2.sigmaPlus.F1_D2_F1 = TransStrengthD2.sigmaMinus.F1_D2_F1.T
+DecayStrengthD2.sigmaPlus.F2_D2_F1 = TransStrengthD2.sigmaMinus.F1_D2_F2.T
+DecayStrengthD2.sigmaPlus.F3_D2_F1 = TransStrengthD2.sigmaMinus.F1_D2_F3.T
 
 # F'x -- D2 --> F2
-DecayStrength.sigmaPlus.F0_D2_F2 = TransStrength.sigmaMinus.F2_D2_F0.T
-DecayStrength.sigmaPlus.F1_D2_F2 = TransStrength.sigmaMinus.F2_D2_F1.T
-DecayStrength.sigmaPlus.F2_D2_F2 = TransStrength.sigmaMinus.F2_D2_F2.T
-DecayStrength.sigmaPlus.F3_D2_F2 = TransStrength.sigmaMinus.F2_D2_F3.T
+DecayStrengthD2.sigmaPlus.F0_D2_F2 = TransStrengthD2.sigmaMinus.F2_D2_F0.T
+DecayStrengthD2.sigmaPlus.F1_D2_F2 = TransStrengthD2.sigmaMinus.F2_D2_F1.T
+DecayStrengthD2.sigmaPlus.F2_D2_F2 = TransStrengthD2.sigmaMinus.F2_D2_F2.T
+DecayStrengthD2.sigmaPlus.F3_D2_F2 = TransStrengthD2.sigmaMinus.F2_D2_F3.T
 
 # Pi Decay 
 #-------------------------------------------------------------
 
 # F'x -- D2 --> F1
-DecayStrength.pi.F0_D2_F1 = TransStrength.pi.F1_D2_F0.T 
-DecayStrength.pi.F1_D2_F1 = TransStrength.pi.F1_D2_F1.T 
-DecayStrength.pi.F2_D2_F1 = TransStrength.pi.F1_D2_F2.T 
-DecayStrength.pi.F3_D2_F1 = TransStrength.pi.F1_D2_F3.T 
+DecayStrengthD2.pi.F0_D2_F1 = TransStrengthD2.pi.F1_D2_F0.T 
+DecayStrengthD2.pi.F1_D2_F1 = TransStrengthD2.pi.F1_D2_F1.T 
+DecayStrengthD2.pi.F2_D2_F1 = TransStrengthD2.pi.F1_D2_F2.T 
+DecayStrengthD2.pi.F3_D2_F1 = TransStrengthD2.pi.F1_D2_F3.T 
 
 # F'x -- D2 --> F2
-DecayStrength.pi.F0_D2_F2 = TransStrength.pi.F2_D2_F0.T
-DecayStrength.pi.F1_D2_F2 = TransStrength.pi.F2_D2_F1.T
-DecayStrength.pi.F2_D2_F2 = TransStrength.pi.F2_D2_F2.T
-DecayStrength.pi.F3_D2_F2 = TransStrength.pi.F2_D2_F3.T
+DecayStrengthD2.pi.F0_D2_F2 = TransStrengthD2.pi.F2_D2_F0.T
+DecayStrengthD2.pi.F1_D2_F2 = TransStrengthD2.pi.F2_D2_F1.T
+DecayStrengthD2.pi.F2_D2_F2 = TransStrengthD2.pi.F2_D2_F2.T
+DecayStrengthD2.pi.F3_D2_F2 = TransStrengthD2.pi.F2_D2_F3.T
 
