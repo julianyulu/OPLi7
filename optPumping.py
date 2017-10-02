@@ -21,11 +21,15 @@ import numpy as np
 class optPumping:
     
     
-    def __init__(self, Dline,  pumpPol1, pumpPol2):
+    def __init__(self, Dline, excitedF, pumpPol1, pumpPol2):
         
         if Dline == 'D1':
-            from TransitionStrength import TransStrengthD1 as TransStrength
-            from TransitionStrength import DecayStrengthD1 as DecayStrength
+            if excitedF == 'F1':
+                from TransitionStrength import TransStrengthD1_toF1 as TransStrength
+                from TransitionStrength import DecayStrengthD1_toF1 as DecayStrength
+            elif excitedF == 'F2':
+                from TransitionStrength import TransStrengthD1_toF2 as TransStrength
+                from TransitionStrength import DecayStrengthD1_toF2 as DecayStrength
         elif Dline == 'D2':
             from TransitionStrength import TransStrengthD2 as TransStrength
             from TransitionStrength import DecayStrengthD2 as DecayStrength
@@ -34,7 +38,7 @@ class optPumping:
         # I don't think this is necessary
         #self.TransStrength = TransStrength
         #self.DecayStrength = DecayStrength
-
+        
         
         # Initialize pump matrix 
         try:
@@ -83,7 +87,6 @@ class optPumping:
 
         # Calculate atom-light scattering rate
         
-        
     def dipoleScaleFactor(self): 
         totTransElement  = 0 # For Li D2, should be 37393.75, use for unit test 
         for trans in self.decayMatrix.transition:
@@ -106,11 +109,11 @@ class optPumping:
         newG2 = np.zeros([1, len(G2[0])])
         
         for es in self.eStates:
-            newG1 += -self.vectorizeMatrix(eval("self.pumpMatrix1.F1_D2_" + es)).T * G1 * I1\
+            newG1 += -self.vectorizeMatrix(eval("self.pumpMatrix1.F1_" + self.Dline + "_" + es)).T * G1 * I1\
                      + np.dot(popExcited[es][idx], eval("self.decayMatrix.sigmaPlus." + es + "_" + self.Dline + "_F1"))\
                      + np.dot(popExcited[es][idx], eval("self.decayMatrix.sigmaMinus." + es + "_" + self.Dline + "_F1"))\
                      + np.dot(popExcited[es][idx], eval("self.decayMatrix.pi." + es + "_" + self.Dline + "_F1"))
-            newG2 += -self.vectorizeMatrix(eval("self.pumpMatrix1.F2_D2_" + es)).T * G2 * I2\
+            newG2 += -self.vectorizeMatrix(eval("self.pumpMatrix1.F2_" + self.Dline + "_" + es)).T * G2 * I2\
                      + np.dot(popExcited[es][idx], eval("self.decayMatrix.sigmaPlus." + es + "_" + self.Dline + "_F2"))\
                      + np.dot(popExcited[es][idx], eval("self.decayMatrix.sigmaMinus." + es + "_" + self.Dline + "_F2"))\
                      + np.dot(popExcited[es][idx], eval("self.decayMatrix.pi." + es + "_" + self.Dline + "_F2"))

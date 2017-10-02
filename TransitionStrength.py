@@ -18,10 +18,39 @@
 import numpy as np
 
 # Pumping transition D1 line
-class TransStrenghtD1_toF1:
+class TransStrengthD1_toF2:
+    eStates = ['F2']
+    numSubStates = [5]    
     polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
-    transition = ['F1_D1_F1','F1_D1_F2',
-                  'F2_D1_F1','F2_D1_F2',] 
+    transition = ['F1_D1_F2',
+                  'F2_D1_F2',] 
+    class sigmaPlus:
+        pass
+    class sigmaMinus:
+        pass
+    class pi:
+        pass
+
+# Decay transition D1 line
+class DecayStrengthD1_toF2:
+    eStates = ['F2']
+    numSubStates = [5]
+    polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
+    transition = ['F2_D1_F1',
+                  'F2_D1_F2'] 
+    class sigmaPlus:
+        pass
+    class sigmaMinus:
+        pass
+    class pi:
+        pass
+
+class TransStrengthD1_toF1:
+    eStates = ['F1']
+    numSubStates = [3]    
+    polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
+    transition = ['F1_D1_F1',
+                  'F2_D1_F1',] 
     class sigmaPlus:
         pass
     class sigmaMinus:
@@ -31,17 +60,17 @@ class TransStrenghtD1_toF1:
 
 # Decay transition D1 line
 class DecayStrengthD1_toF1:
+    eStates = ['F1']
+    numSubStates = [3]
     polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
-    transition = ['F1_D1_F1','F1_D1_F2',
-                  'F2_D1_F1','F2_D1_F2',] 
+    transition = ['F1_D1_F1',
+                  'F1_D1_F2'] 
     class sigmaPlus:
         pass
     class sigmaMinus:
         pass
     class pi:
         pass
-
-
 # Pumping transition D2 line
 class TransStrengthD2:
     eStates = ['F0', 'F1', 'F2', 'F3']
@@ -74,12 +103,155 @@ class DecayStrengthD2:
         pass
 
 # ===========================
-# D2 Line Pumping Transitions
+# D1 Line Pumping Transitions (To F1 excited state)
 # ===========================
 
+# SigmaPlus Transitions 
+#-------------------------------------------------------------
+TransStrengthD1_toF1.sigmaPlus.F1_D1_F1 = np.array([
+        [0, 1, 0],
+        [0, 0, 1],
+        [0, 0, 0]
+        ])
+
+TransStrengthD1_toF1.sigmaPlus.F2_D1_F1 = np.array([
+        [6, 0, 0],
+        [0, 3, 0],
+        [0, 0, 1],
+        [0, 0, 0],
+        [0, 0, 0]
+        ])
+
+# SigmaMinus Transitions 
+#-------------------------------------------------------------
+TransStrengthD1_toF1.sigmaMinus.F1_D1_F1 = np.array([
+        [0, 0, 0],
+        [1, 0, 0],
+        [0, 1, 0]
+        ])
+
+TransStrengthD1_toF1.sigmaMinus.F2_D1_F1 = np.array([
+        [0, 0, 0],
+        [0, 0, 0],
+        [1, 0, 0],
+        [0, 3, 0],
+        [0, 0, 6]
+        ])
+        
+# Pi Transitions 
+#-------------------------------------------------------------
+TransStrengthD1_toF1.pi.F1_D1_F1 = np.array([
+        [1, 0, 0],
+        [0, 0, 0],
+        [0, 0, 1]
+        ])
+
+TransStrengthD1_toF1.pi.F2_D1_F1 = np.array([
+        [0, 0, 0],
+        [3, 0, 0],
+        [0, 4, 0],
+        [0, 0, 3],
+        [0, 0, 0]
+        ])
 
 
-    
+# ===========================
+# D1 Line Pumping Transitions (To F2 excited state)
+# ===========================
+
+# SigmaPlus Transitions 
+#-------------------------------------------------------------
+TransStrengthD1_toF2.sigmaPlus.F1_D1_F2 = np.array([
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 3, 0],
+        [0, 0, 0, 0, 6]
+        ])
+
+TransStrengthD1_toF2.sigmaPlus.F2_D1_F2 = np.array([
+        [0, 2, 0, 0, 0],
+        [0, 0, 3, 0, 0],
+        [0, 0, 0, 3, 0],
+        [0, 0, 0, 0, 2],
+        [0, 0, 0, 0, 0]
+        ])
+
+# SigmaMinus Transitions 
+#-------------------------------------------------------------
+TransStrengthD1_toF2.sigmaMinus.F1_D1_F2 = np.array([
+        [6, 0, 0, 0, 0],
+        [0, 3, 0, 0, 0],
+        [0, 0, 1, 0, 0]
+        ])
+
+TransStrengthD1_toF2.sigmaMinus.F2_D1_F2 = np.array([
+        [0, 0, 0, 0, 0],
+        [2, 0, 0, 0, 0],
+        [0, 3, 0, 0, 0],
+        [0, 0, 3, 0, 0],
+        [0, 0, 0, 3, 0]
+        ])
+        
+# Pi Transitions 
+#-------------------------------------------------------------
+TransStrengthD1_toF2.pi.F1_D1_F2 = np.array([
+        [0, 3, 0, 0, 0],
+        [0, 0, 4, 0, 0],
+        [0, 0, 0, 3, 0]
+        ])
+
+TransStrengthD1_toF2.pi.F2_D1_F2 = np.array([
+        [4, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 4]
+        ])
+
+
+
+# =========================
+# D1 Line Decay Transitions (from F=2)
+# =========================
+
+# SigmaPlus Decay 
+#-------------------------------------------------------------
+
+# F'x -- D2 --> F1, F2
+DecayStrengthD1_toF2.sigmaMinus.F2_D1_F1 = TransStrengthD1_toF2.sigmaPlus.F1_D1_F2.T
+DecayStrengthD1_toF2.sigmaMinus.F2_D1_F2 = TransStrengthD1_toF2.sigmaPlus.F2_D1_F2.T
+
+# SigmaMinus Decay 
+#-------------------------------------------------------------
+DecayStrengthD1_toF2.sigmaPlus.F2_D1_F1 = TransStrengthD1_toF2.sigmaMinus.F1_D1_F2.T
+DecayStrengthD1_toF2.sigmaPlus.F2_D1_F2 = TransStrengthD1_toF2.sigmaMinus.F2_D1_F2.T
+
+# Pi Decay
+#-------------------------------------------------------------
+DecayStrengthD1_toF2.pi.F2_D1_F1 = TransStrengthD1_toF2.pi.F1_D1_F2.T
+DecayStrengthD1_toF2.pi.F2_D1_F2 = TransStrengthD1_toF2.pi.F2_D1_F2.T 
+
+# =========================
+# D1 Line Decay Transitions (from F=1)
+# =========================
+
+# SigmaPlus Decay 
+#-------------------------------------------------------------
+
+# F'x -- D2 --> F1, F2
+DecayStrengthD1_toF1.sigmaMinus.F1_D1_F1 = TransStrengthD1_toF1.sigmaPlus.F1_D1_F1.T
+DecayStrengthD1_toF1.sigmaMinus.F1_D1_F2 = TransStrengthD1_toF1.sigmaPlus.F2_D1_F1.T
+
+# SigmaMinus Decay 
+#-------------------------------------------------------------
+DecayStrengthD1_toF1.sigmaPlus.F1_D1_F1 = TransStrengthD1_toF1.sigmaMinus.F1_D1_F1.T
+DecayStrengthD1_toF1.sigmaPlus.F1_D1_F2 = TransStrengthD1_toF1.sigmaMinus.F2_D1_F1.T
+
+# Pi Decay
+#-------------------------------------------------------------
+DecayStrengthD1_toF1.pi.F1_D1_F1 = TransStrengthD1_toF1.pi.F1_D1_F1.T
+DecayStrengthD1_toF1.pi.F1_D1_F2 = TransStrengthD1_toF1.pi.F2_D1_F1.T 
+
+        
 # ===========================
 # D2 Line Pumping Transitions
 # ===========================

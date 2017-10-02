@@ -17,7 +17,7 @@
 
 from optPumping import optPumping
 #from TransitionStrength import TransStrength, DecayStrength
-from Constant import dt, totalTime, polorization1, polorization2, I1, I2, Dline
+from Constant import dt, totalTime, polorization1, polorization2, I1, I2, Dline,excited_hpf_state
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
@@ -25,7 +25,7 @@ from cycler import cycler
 
 def main():
     global dt, totalTime, polorization1, polorization2, I1, I2
-    p = optPumping(Dline,polorization1, polorization2)
+    p = optPumping(Dline, excited_hpf_state, polorization1, polorization2)
 
     # Initialization of population dictionary 
     popG = {} # Ground states population dictionary, dic of list of 2d array

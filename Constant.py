@@ -17,10 +17,12 @@
 
 
 
-polorization1 = "pi"
+polorization1 = "sigmaPlus"
 polorization2 = "pi"
-Dline = "D2"
+Dline = "D1"
+excited_hpf_state = 'F2'
 Isat = 2.56
+#Isat = 7.00
 I1 = 1
 I2 = 0
 
