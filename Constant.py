@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 15:57:32 2017 (-0500)
 # Version: 
-# Last-Updated: Thu Sep 28 10:40:51 2017 (-0500)
-#           By: yulu
-#     Update #: 41
+# Last-Updated: Mon Oct  2 13:41:22 2017 (-0500)
+#           By: superlu
+#     Update #: 42
 # 
 
 
@@ -21,7 +21,7 @@ polorization1 = "pi"
 polorization2 = "pi"
 Dline = "D2"
 Isat = 2.56
-I1 = 200
+I1 = 1
 I2 = 0
 
 

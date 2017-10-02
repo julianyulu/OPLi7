@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Thu Sep 28 18:50:48 2017 (-0500)
+# Last-Updated: Mon Oct  2 13:54:29 2017 (-0500)
 #           By: superlu
-#     Update #: 256
+#     Update #: 278
 # 
 
 
@@ -69,8 +69,8 @@ class optPumping:
         
         # Initialize ground level population
         self.pop_Ground ={
-            'F1': np.ones([1,3]) * 3./8,
-            'F2': np.ones([1,5]) * 5./8
+            'F1': np.ones([1,3]) * 1./8,
+            'F2': np.ones([1,5]) * 1./8
             }
 
         # Initialize excited level population
@@ -106,19 +106,18 @@ class optPumping:
         newG2 = np.zeros([1, len(G2[0])])
         
         for es in self.eStates:
-            print(popExcited[es][idx].shape)
             newG1 += -self.vectorizeMatrix(eval("self.pumpMatrix1.F1_D2_" + es)).T * G1 * I1\
                      + np.dot(popExcited[es][idx], eval("self.decayMatrix.sigmaPlus." + es + "_" + self.Dline + "_F1"))\
                      + np.dot(popExcited[es][idx], eval("self.decayMatrix.sigmaMinus." + es + "_" + self.Dline + "_F1"))\
                      + np.dot(popExcited[es][idx], eval("self.decayMatrix.pi." + es + "_" + self.Dline + "_F1"))
-            newG2 += -self.vectorizeMatrix(eval("self.pumpMatrix1.F1_D2_" + es)).T * G2 * I2\
+            newG2 += -self.vectorizeMatrix(eval("self.pumpMatrix1.F2_D2_" + es)).T * G2 * I2\
                      + np.dot(popExcited[es][idx], eval("self.decayMatrix.sigmaPlus." + es + "_" + self.Dline + "_F2"))\
                      + np.dot(popExcited[es][idx], eval("self.decayMatrix.sigmaMinus." + es + "_" + self.Dline + "_F2"))\
                      + np.dot(popExcited[es][idx], eval("self.decayMatrix.pi." + es + "_" + self.Dline + "_F2"))
         newG1 = G1 + newG1 * self.dipoleFactor * dt  
         newG2 = G2 + newG2 * self.dipoleFactor * dt
-        pop['F1'] = newG1
-        pop['F2'] = newG2
+        pop = {'F1': newG1,\
+               'F2': newG2}
         return pop
 
     def calExcitedPop(self, popGround, popExcited, idx, I1, I2, dt):
@@ -132,12 +131,11 @@ class optPumping:
                     newE[es] += np.dot(popGround[gs][idx], eval("pumpMatrix." + gs + "_" + self.Dline + "_" + es)) / 3.0 * I\
                             - self.vectorizeMatrix(eval("self.decayMatrix." + p + "." + es + "_" + self.Dline + "_" + gs)).T * popExcited[es][idx]
         for es in self.eStates:
-            newE[es] = popExcited[es][idx] + newE[es][idx] * self.dipoleFactor * dt
+            newE[es] = popExcited[es][idx] + newE[es] * self.dipoleFactor * dt
         return newE
                 
     
     
     def checkUniformity(self, popGround,  popExcited):
-        
-        return popGround['F1'].sum() + G2.sum() + sum([popExcited[str(x)].sum() for x in popExcited])
+        return popGround['F1'].sum() + popGround['F2'].sum() + sum([popExcited[str(x)].sum() for x in popExcited])
     

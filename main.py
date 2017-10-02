@@ -9,9 +9,9 @@
 # 
 # Created: Wed Sep 20 15:34:21 2017 (-0500)
 # Version: 
-# Last-Updated: Thu Sep 28 18:50:32 2017 (-0500)
+# Last-Updated: Mon Oct  2 13:56:48 2017 (-0500)
 #           By: superlu
-#     Update #: 188
+#     Update #: 196
 # 
 
 
@@ -46,10 +46,9 @@ def main():
                 popE[f].append(newPopE[f])
             popG['F1'].append(newPopG['F1'])
             popG['F2'].append(newPopG['F2'])
-
             unitCheck = p.checkUniformity(newPopG, newPopE)
             if abs( unitCheck- 1) > 0.1:
-                print("Total population: ", unitCheck, " off too much")
+                print("Total population: ", unitCheck, " off too much, cycle: ", i)
                 return 0 
     clock = np.linspace(0, totalTime, numSteps) * 1e9
 
@@ -67,7 +66,8 @@ def main():
         'F = 2, m = 0, pop =', popG['F2'][-1][0][2], '\n',\
         'F = 2, m = 1, pop =', popG['F2'][-1][0][3], '\n',\
         'F = 2, m = 2, pop =', popG['F2'][-1][0][4], '\n')
-    print("Total population: ", p.checkUniformity(G1,G2,E0, E1, E2, E3) )
+    
+    #print("Total population: ", p.checkUniformity(G1,G2,E0, E1, E2, E3) )
     lw = 3
     fig1 = plt.figure(1)
     ax1 = fig1.add_subplot(111)
@@ -90,7 +90,7 @@ def main():
     for f in p.eStates:
         fNum = int(f[-1])
         for i in range(2 * fNum + 1):
-            ax2.plot(clock, [x[0][i] for x in popE[f]], "-", label = "F=" + str(fNum) + ", m=" + -fNum+ i, linewidth = lw)
+            ax2.plot(clock, [x[0][i] for x in popE[f]], "-", label = "F=" + str(fNum) + ", m=" + str(-fNum+ i), linewidth = lw)
 
     ax2.legend()
     
