@@ -1,0 +1,21 @@
+sudo: false
+
+language: python
+
+python:
+	- "3.6"
+
+before_install:
+	- pip install --upgrade pip
+
+install:
+	- pip install numpy
+	- pip install matplotlib	
+
+before_script:
+	- uname -a
+	- printenv |sort
+
+script:
+	- ls -al
+	- python3 main.py

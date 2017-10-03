@@ -1,4 +1,4 @@
-# Functions.py --- 
+# optPumping.py --- 
 # 
 # Filename: Functions.py
 # Description: 
@@ -9,20 +9,19 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  2 13:54:29 2017 (-0500)
-#           By: superlu
-#     Update #: 278
+# Last-Updated: Mon Oct  2 22:53:32 2017 (-0500)
+#           By: yulu
+#     Update #: 290
 # 
 
+import numpy as np
 
-#from Constant import *    
-#from TransitionStrength import *
-import numpy as np 
+
 class optPumping:
-    
-    
     def __init__(self, Dline, excitedF, pumpPol1, pumpPol2):
-        
+
+        # Load D line transition database
+        # ---------------------------------------------------------------------------
         if Dline == 'D1':
             if excitedF == 'F1':
                 from TransitionStrength import TransStrengthD1_toF1 as TransStrength
@@ -35,60 +34,66 @@ class optPumping:
             from TransitionStrength import DecayStrengthD2 as DecayStrength
         else:
             print('Unavaliable D line transition !')
-        # I don't think this is necessary
-        #self.TransStrength = TransStrength
-        #self.DecayStrength = DecayStrength
-        
-        
-        # Initialize pump matrix 
+
+        # Initialize pumping matrix based on polarization
+        # ---------------------------------------------------------------------------
         try:
-            self.pumpMatrix1 = eval('TransStrength.' + pumpPol1) # select pumping matrix based on polarization
-            self.pumpMatrix2 = eval('TransStrength.' + pumpPol2) # select pumping matrix based on polarization
+            self.pumpMatrix1 = eval('TransStrength.' + pumpPol1) 
+            self.pumpMatrix2 = eval('TransStrength.' + pumpPol2) 
         except AttributeError:
             print("Incorrect polorization name, please chose one of the following:\n\
             sigmaPlus, sigmaMinux, pi\n")
 
+        # Initialize decay matrix
+        # ---------------------------------------------------------------------------
+        self.decayMatrix = DecayStrength 
+
+        
         # Initialize pump beam polorization
+        # ---------------------------------------------------------------------------
         self.pumpPol1 = pumpPol1 # Polorization for pumping beam F1 --> Excited states
         self.pumpPol2 = pumpPol2 # Polorization for pumping beam F2 --> Excited states
-
-        # Initialize decay matrix
-        self.decayMatrix = DecayStrength # 
         
-        # Initialize polarization list
+        # Initialize possible polarization list
+        # ---------------------------------------------------------------------------
         self.pol = TransStrength.polarization
 
-        # Initialize D line
+        # Initialize D line value
+        # ---------------------------------------------------------------------------
         self.Dline = Dline
         
-        # Number of excited hyperfine states F
+        # Initialize number of excited hyperfine magnetic substates F
+        # ---------------------------------------------------------------------------
         self.numEStates = len(DecayStrength.numSubStates)
 
-        # Excited hyperfine states name
+        # Initialize excited hyperfine states name
+        # ---------------------------------------------------------------------------
         self.eStates = TransStrength.eStates
         
-        # Transition energy levels 
-        self.pumpTransLevel = TransStrength.transition
-        self.decayTransLevel = DecayStrength.transition
-        
         # Initialize ground level population
+        # ---------------------------------------------------------------------------
         self.pop_Ground ={
             'F1': np.ones([1,3]) * 1./8,
             'F2': np.ones([1,5]) * 1./8
             }
 
         # Initialize excited level population
+        # ---------------------------------------------------------------------------
         self.pop_Excited = {}
         for s,n in zip(DecayStrength.eStates, DecayStrength.numSubStates):
             self.pop_Excited[s] = np.zeros([1, n])
         
-        # Calculate overal factor for dipole matrix
+        # Calculate overall factor for dipole matrix normalization
+        # ---------------------------------------------------------------------------
         self.dipoleFactor = self.dipoleScaleFactor()
 
-        # Calculate atom-light scattering rate
-        
-    def dipoleScaleFactor(self): 
-        totTransElement  = 0 # For Li D2, should be 37393.75, use for unit test 
+                
+    def dipoleScaleFactor(self):
+        """
+        Calculate the overall scale factor which leads to:
+        Gamma = sum(all transition matrix squared) * scale factor
+        """
+        totTransElement  = 0 
         for trans in self.decayMatrix.transition:
             for pol in self.decayMatrix.polarization:
                 totTransElement = totTransElement + \
@@ -98,7 +103,11 @@ class optPumping:
         return factor
 
     
-    def vectorizeMatrix(self,mtx): # accumulate matrix columns to rows 
+    def vectorizeMatrix(self,mtx): 
+        """
+        Accumulate matrix columns to rows, e.g. 
+        after apply to shape = (3,4) matrix, it becomes (3, 1) matrix 
+        """
         return mtx.sum(axis = 1)
 
     
