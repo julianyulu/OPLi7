@@ -9,9 +9,9 @@
 # 
 # Created: Wed Sep 20 15:34:21 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  2 13:56:48 2017 (-0500)
-#           By: superlu
-#     Update #: 196
+# Last-Updated: Mon Oct  2 23:26:22 2017 (-0500)
+#           By: yulu
+#     Update #: 198
 # 
 
 
@@ -58,6 +58,7 @@ def main():
     #    })
 
     print(
+        '--------------------------------------------------\n',\
         'F = 1, m = -1, pop =', popG['F1'][-1][0][0], '\n',\
         'F = 1, m = -0, pop =', popG['F1'][-1][0][1], '\n',\
         'F = 1, m = 1, pop =', popG['F1'][-1][0][2], '\n',\
