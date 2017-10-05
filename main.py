@@ -9,22 +9,29 @@
 # 
 # Created: Wed Sep 20 15:34:21 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  2 23:26:22 2017 (-0500)
-#           By: yulu
-#     Update #: 198
+# Last-Updated: Thu Oct  5 11:37:29 2017 (-0500)
+#           By: superlu
+#     Update #: 211
 # 
 
 
 from optPumping import optPumping
-#from TransitionStrength import TransStrength, DecayStrength
-from Constant import dt, totalTime, polorization1, polorization2, I1, I2, Dline,excited_hpf_state
+from Constant import input
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 from cycler import cycler
 
-def main():
-    global dt, totalTime, polorization1, polorization2, I1, I2
+def main(Dline,
+         excited_hpf_state,
+         I1,
+         I2,
+         polorization1,
+         polorization2,
+         totalTime,
+         dt,
+         plot = True):
+
     p = optPumping(Dline, excited_hpf_state, polorization1, polorization2)
 
     # Initialization of population dictionary 
@@ -69,39 +76,40 @@ def main():
         'F = 2, m = 2, pop =', popG['F2'][-1][0][4], '\n')
     
     #print("Total population: ", p.checkUniformity(G1,G2,E0, E1, E2, E3) )
-    lw = 3
-    fig1 = plt.figure(1)
-    ax1 = fig1.add_subplot(111)
-    ax1.plot(clock, [x[0][0] for x in popG['F1']], "-", label = 'F = 1, m = -1', linewidth = lw)
-    ax1.plot(clock, [x[0][1] for x in popG['F1']], "-", label = 'F = 1, m = 0', linewidth = lw)
-    ax1.plot(clock, [x[0][2] for x in popG['F1']], "-", label = 'F = 1, m = 1', linewidth = lw)
-    ax1.plot(clock, [x[0][0] for x in popG['F2']], "-", label = 'F = 2, m = -2', linewidth = lw)
-    ax1.plot(clock, [x[0][1] for x in popG['F2']], "-", label = 'F = 2, m = -1', linewidth = lw)
-    ax1.plot(clock, [x[0][2] for x in popG['F2']], "-", label = 'F = 2, m = 0', linewidth = lw)
-    ax1.plot(clock, [x[0][3] for x in popG['F2']], "-", label = 'F = 2, m = 1', linewidth = lw)
-    ax1.plot(clock, [x[0][4] for x in popG['F2']], "-", label = 'F = 2, m = 2', linewidth = lw)
-    ax1.legend()
+    if plot:
+        lw = 3
+        fig1 = plt.figure(1)
+        ax1 = fig1.add_subplot(111)
+        ax1.plot(clock, [x[0][0] for x in popG['F1']], "-", label = 'F = 1, m = -1', linewidth = lw)
+        ax1.plot(clock, [x[0][1] for x in popG['F1']], "-", label = 'F = 1, m = 0', linewidth = lw)
+        ax1.plot(clock, [x[0][2] for x in popG['F1']], "-", label = 'F = 1, m = 1', linewidth = lw)
+        ax1.plot(clock, [x[0][0] for x in popG['F2']], "-", label = 'F = 2, m = -2', linewidth = lw)
+        ax1.plot(clock, [x[0][1] for x in popG['F2']], "-", label = 'F = 2, m = -1', linewidth = lw)
+        ax1.plot(clock, [x[0][2] for x in popG['F2']], "-", label = 'F = 2, m = 0', linewidth = lw)
+        ax1.plot(clock, [x[0][3] for x in popG['F2']], "-", label = 'F = 2, m = 1', linewidth = lw)
+        ax1.plot(clock, [x[0][4] for x in popG['F2']], "-", label = 'F = 2, m = 2', linewidth = lw)
+        ax1.legend()
     
 
     
-    fig2 = plt.figure(2)
-    ax2 = fig2.add_subplot(111)
-    #cm2 = plt.get_cmap('magma', linewidth = lw)
-    #ax2.set_prop_cycle(cycler('color', [cm2(1. * i / 16) for i in range(16)]))
-    for f in p.eStates:
-        fNum = int(f[-1])
-        for i in range(2 * fNum + 1):
-            ax2.plot(clock, [x[0][i] for x in popE[f]], "-", label = "F=" + str(fNum) + ", m=" + str(-fNum+ i), linewidth = lw)
+        fig2 = plt.figure(2)
+        ax2 = fig2.add_subplot(111)
+        #cm2 = plt.get_cmap('magma', linewidth = lw)
+        #ax2.set_prop_cycle(cycler('color', [cm2(1. * i / 16) for i in range(16)]))
+        for f in p.eStates:
+            fNum = int(f[-1])
+            for i in range(2 * fNum + 1):
+                ax2.plot(clock, [x[0][i] for x in popE[f]], "-", label = "F=" + str(fNum) + ", m=" + str(-fNum+ i), linewidth = lw)
 
-    ax2.legend()
+        ax2.legend()
     
-    #fig.savefig("./test.png")
-    plt.show()
-    #matplotlib.rcdefaults()
+        #fig.savefig("./test.png")
+        plt.show()    
+        #matplotlib.rcdefaults()
     print("done")
 
 if __name__ == "__main__":
-    main()
+    main(**input)
     
         
         
