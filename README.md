@@ -1,9 +1,9 @@
 # Optical Pumping Simulation On Lithium7 Dline  
 [![Build Status](https://travis-ci.org/SuperYuLu/OpticalPumpingLithium7Dline.svg?branch=master)](https://travis-ci.org/SuperYuLu/OpticalPumpingLithium7Dline)  
-|Author | Yu Lu|
-|------:|:-----|
-|Create|Oct.05 2017|
-|Institute|Univ. of Texas at Austin|  
+| Author | Yu Lu |
+| ------:|-----: |
+| Create | Oct.05 2017 |
+| Institute | Univ. of Texas at Austin |  
 
 ## Introduction 
 This is a repository built for simulating the hyperfine transitions under optical pumping of lithium 7 atoms, which is part of my current research. Manipulating the hyperfine states of cold atoms allows researchers to study their behavior under different interaction regimes, as well as detecting atoms in a specific state. Although the quantum transition between levels of atoms has been well studied by quantum mechanics, the accurate analytical solution of optical pumping process under certain conditions is very much rely on 2-level system model, in which the population of involved quantum states ( usually noted as ground state and excited state) is descriped by [Optical Bloch equations](https://en.wikipedia.org/wiki/Maxwell%E2%80%93Bloch_equations).   
