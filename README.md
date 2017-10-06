@@ -1,7 +1,8 @@
 # Optical Pumping Simulation On Lithium7 Dline  
 [![Build Status](https://travis-ci.org/SuperYuLu/OpticalPumpingLithium7Dline.svg?branch=master)](https://travis-ci.org/SuperYuLu/OpticalPumpingLithium7Dline)  
+
 | Author | Yu Lu |
-| ------:|-----: |
+| ------:|:----- |
 | Create | Oct.05 2017 |
 | Institute | Univ. of Texas at Austin |  
 
