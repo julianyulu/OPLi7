@@ -2,12 +2,13 @@ FILES :=	\
 	Constant.py	\
 	optPumping.py	\
 	TransitionStrength.py\
+	plot.py\
 	main.py
 
 
 
 
-main: Constant.py optPumping.py TransitionStrength.py
+main: Constant.py optPumping.py TransitionStrength.py plot.py
 	python3 main.py
 
 check:
@@ -32,5 +33,6 @@ check:
 
 clean:
 	rm -f *.pyc
+	rm -f *~
 	rm -rf __pycache__
 
