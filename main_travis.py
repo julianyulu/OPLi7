@@ -9,7 +9,7 @@
 # 
 # Created: Wed Sep 20 15:34:21 2017 (-0500)
 # Version: 
-# Last-Updated: Thu Oct  5 19:26:07 2017 (-0500)
+# Last-Updated: Thu Oct  5 19:25:54 2017 (-0500)
 #           By: superlu
 #     Update #: 238
 # 
@@ -28,7 +28,7 @@ def main(Dline,
          polorization2,
          totalTime,
          dt,
-         plot = True):
+         plot = False):
 
     p = optPumping(Dline, excited_hpf_state, polorization1, polorization2)
 
