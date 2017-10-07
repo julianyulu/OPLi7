@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Sat Oct  7 14:24:08 2017 (-0500)
+# Last-Updated: Sat Oct  7 15:40:42 2017 (-0500)
 #           By: yulu
-#     Update #: 325
+#     Update #: 333
 # 
 
 import numpy as np
@@ -29,6 +29,8 @@ class optPumping:
             elif excitedF == 'F2':
                 from TransitionStrength import TransStrengthD1_toF2 as TransStrength
                 from TransitionStrength import DecayStrengthD1_toF2 as DecayStrength
+            else:
+                print("D1 line has not excited hpf states ", Dline)
         elif Dline == 'D2':
             from TransitionStrength import TransStrengthD2 as TransStrength
             from TransitionStrength import DecayStrengthD2 as DecayStrength
@@ -101,8 +103,7 @@ class optPumping:
         totTransElement  = 0 
         for trans in self.decayMatrix.transition:
             for pol in self.decayMatrix.polarization:
-                totTransElement = totTransElement + \
-                                  eval('self.decayMatrix.' + pol + '.' + trans + '.sum()');
+                totTransElement +=eval('self.decayMatrix.' + pol + '.' + trans + '.sum()');
         einsteinAFactor = (2 * np.pi * self.freq)**3 / (3 * np.pi * e0 * hBar * c**3)
         
         factor  = gamma / (einsteinAFactor * totTransElement)
@@ -125,6 +126,10 @@ class optPumping:
         return einsteinAFactor * (trans * self.dipoleFactor)
 
     def omega(self, trans, I):
+        """
+        Calculate rabi frequency based on light intensity 
+        and relative transition strength from Metcalf's yellow book
+        """
         from Constant import h, e0, c
         Ueg = np.sqrt(trans * self.dipoleFactor)
         return Ueg * np.sqrt(2 * I /( e0 * c)) / h
@@ -136,14 +141,14 @@ class optPumping:
         newG2 = np.zeros([1, len(G2[0])])
         from Constant import gamma
         detuneFactor1 = gamma / 2 / ((gamma / 2)**2 + detune1**2)
-        detuneFactor1 = gamma / 2 / ((gamma / 2)**2 + detune2**2)
+        detuneFactor2 = gamma / 2 / ((gamma / 2)**2 + detune2**2)
         for es in self.eStates:
             
             newG1 += -self.reduceMatrix(self.omega(eval("self.pumpMatrix1.F1_" + self.Dline + "_" + es), I1)**2/2).T * detuneFactor1 * G1 \
                      + np.dot(popExcited[es][idx],  self.einsteinA(eval("self.decayMatrix.sigmaPlus." + es + "_" + self.Dline + "_F1"))) \
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.sigmaMinus." + es + "_" + self.Dline + "_F1")))\
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.pi." + es + "_" + self.Dline + "_F1")))
-            newG2 += -self.reduceMatrix(self.omega(eval("self.pumpMatrix1.F2_" + self.Dline + "_" + es), I2)**2 / 2).T * detuneFactor1 * G2 \
+            newG2 += -self.reduceMatrix(self.omega(eval("self.pumpMatrix1.F2_" + self.Dline + "_" + es), I2)**2 / 2).T * detuneFactor2 * G2 \
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.sigmaPlus." + es + "_" + self.Dline + "_F2")))\
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.sigmaMinus." + es + "_" + self.Dline + "_F2")))\
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.pi." + es + "_" + self.Dline + "_F2")))

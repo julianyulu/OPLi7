@@ -10,9 +10,9 @@
 # 
 # Created: Thu Oct  5 17:52:51 2017 (-0500)
 # Version: 
-# Last-Updated: Sat Oct  7 14:18:22 2017 (-0500)
+# Last-Updated: Sat Oct  7 14:50:36 2017 (-0500)
 #           By: yulu
-#     Update #: 41
+#     Update #: 42
 # 
 
 
@@ -34,8 +34,8 @@ def plotPop( clock,  Dline, eStates, polorization1, polorization2, I1, I2, popG,
             ax1.plot(clock, [x[0][i] for x in popG[f]], "-", \
                      label = "F=" + str(fNum) + ", m=" + str(-fNum+ i), linewidth = lw)
     ax1.set_title('Li7 ' +  Dline + ' transition ground(top) and excited(bottom)  hpf states population\n' \
-                  + 'F1 -> ' + excitedState + ': ' + polorization1 + ' pol.  ' + str(I1*10) + ' mW/cm2 || ' \
-                  + 'F2 -> ' + excitedState + ': ' + polorization2 + ' pol.  ' + str(I2*10) + ' mW/cm2')
+                  + 'F1 -> ' + excitedState + ': ' + polorization1 + ' pol.  ' + str(I1*0.1) + ' mW/cm2 || ' \
+                  + 'F2 -> ' + excitedState + ': ' + polorization2 + ' pol.  ' + str(I2*0.1) + ' mW/cm2')
     ax1.set_xlabel('Time [us]')
     ax1.legend()    
 

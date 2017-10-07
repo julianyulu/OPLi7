@@ -9,9 +9,9 @@
 # 
 # Created: Wed Sep 20 15:34:21 2017 (-0500)
 # Version: 
-# Last-Updated: Sat Oct  7 14:18:38 2017 (-0500)
+# Last-Updated: Sat Oct  7 15:24:14 2017 (-0500)
 #           By: yulu
-#     Update #: 244
+#     Update #: 245
 # 
 
 
@@ -58,7 +58,7 @@ def main(Dline,
             if abs( unitCheck- 1) > 0.1:
                 print("Total population: ", unitCheck, " off too much, cycle: ", i)
                 return 0 
-    clock = np.linspace(0, totalTime, numSteps) * 1e6
+    clock = np.linspace(0, totalTime, numSteps) * 1e6 # [us]
 
     print(
         '--------------------------------------------------\n',\
