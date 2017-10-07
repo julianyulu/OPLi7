@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 13:02:52 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  2 22:21:10 2017 (-0500)
+# Last-Updated: Sat Oct  7 13:13:03 2017 (-0500)
 #           By: yulu
-#     Update #: 44
+#     Update #: 48
 # 
 
 ##########################################################
@@ -29,6 +29,7 @@ import numpy as np
 #===========#
 class TransStrengthD1_toF1:
     eStates = ['F1']
+    freq = 446789597 # [MHz]
     numSubStates = [3]    
     polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
     transition = ['F1_D1_F1',
@@ -42,6 +43,7 @@ class TransStrengthD1_toF1:
 
 class DecayStrengthD1_toF1:
     eStates = ['F1']
+    freq = 446789597 # [MHz]
     numSubStates = [3]
     polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
     transition = ['F1_D1_F1',
@@ -55,6 +57,7 @@ class DecayStrengthD1_toF1:
 
 class TransStrengthD1_toF2:
     eStates = ['F2']
+    freq = 446789597 # [MHz]
     numSubStates = [5]    
     polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
     transition = ['F1_D1_F2',
@@ -68,6 +71,7 @@ class TransStrengthD1_toF2:
 
 class DecayStrengthD1_toF2:
     eStates = ['F2']
+    freq = 446789597 # [MHz]
     numSubStates = [5]
     polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
     transition = ['F2_D1_F1',
@@ -196,6 +200,7 @@ DecayStrengthD1_toF2.pi.F2_D1_F2 = TransStrengthD1_toF2.pi.F2_D1_F2.T
 
 class TransStrengthD2:
     eStates = ['F0', 'F1', 'F2', 'F3']
+    freq = 446810184 #[MHz]
     numSubStates = [1, 3, 5, 7]
     polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
     transition = ['F1_D2_F0', 'F1_D2_F1','F1_D2_F2', 'F1_D2_F3',
@@ -210,6 +215,7 @@ class TransStrengthD2:
 
 class DecayStrengthD2:
     eStates = ['F0', 'F1', 'F2', 'F3']
+    freq = 446789597 # [MHz]
     numSubStates = [1, 3, 5, 7]
     polarization = ['sigmaPlus', 'sigmaMinus', 'pi']
     transition = ['F0_D2_F1', 'F0_D2_F2',

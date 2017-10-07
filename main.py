@@ -9,9 +9,9 @@
 # 
 # Created: Wed Sep 20 15:34:21 2017 (-0500)
 # Version: 
-# Last-Updated: Thu Oct  5 19:26:07 2017 (-0500)
-#           By: superlu
-#     Update #: 238
+# Last-Updated: Sat Oct  7 14:18:38 2017 (-0500)
+#           By: yulu
+#     Update #: 244
 # 
 
 
@@ -24,6 +24,8 @@ def main(Dline,
          excited_hpf_state,
          I1,
          I2,
+         detune1,
+         detune2,
          polorization1,
          polorization2,
          totalTime,
@@ -31,7 +33,8 @@ def main(Dline,
          plot = True):
 
     p = optPumping(Dline, excited_hpf_state, polorization1, polorization2)
-
+    I1 = I1 * 10 # Convert mW/cm^2 to W/m^2
+    I2 = I2 * 10 
     # Initialization of population dictionary 
     popG = {} # Ground states population dictionary, dic of list of 2d array
     popE = {} # Excited states population dictionary, dic of list of 2d array
@@ -45,8 +48,8 @@ def main(Dline,
             for f in p.eStates:
                 popE[f] = [p.pop_Excited[f]]
         else:
-            newPopG = p.calGroundPop(popG, popE, i-1, I1, I2, dt)
-            newPopE = p.calExcitedPop(popG, popE, i-1, I1, I2, dt)
+            newPopG = p.calGroundPop(popG, popE, i-1, I1, I2, detune1, detune2, dt)
+            newPopE = p.calExcitedPop(popG, popE, i-1, I1, I2, detune1, detune2, dt)
             for f in p.eStates:
                 popE[f].append(newPopE[f])
             popG['F1'].append(newPopG['F1'])
@@ -55,7 +58,7 @@ def main(Dline,
             if abs( unitCheck- 1) > 0.1:
                 print("Total population: ", unitCheck, " off too much, cycle: ", i)
                 return 0 
-    clock = np.linspace(0, totalTime, numSteps) * 1e9
+    clock = np.linspace(0, totalTime, numSteps) * 1e6
 
     print(
         '--------------------------------------------------\n',\
@@ -79,7 +82,8 @@ def main(Dline,
             "I1": I1,
             "I2": I2,
             "popG": popG,
-            "popE": popE
+            "popE": popE,
+            "saveFig": False
             }
         
         plotPop(**params)
