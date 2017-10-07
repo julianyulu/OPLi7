@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 15:57:32 2017 (-0500)
 # Version: 
-# Last-Updated: Sat Oct  7 15:41:09 2017 (-0500)
+# Last-Updated: Sat Oct  7 16:37:29 2017 (-0500)
 #           By: yulu
-#     Update #: 71
+#     Update #: 72
 # 
 
 input = {
@@ -23,8 +23,8 @@ input = {
     #Isat ": 7.00
     "I1": 1, #[mW/cm^2]
     "I2": 0, #[mW/cm^2]
-    "detune1": 0,
-    "detune2": 0,
+    "detune1": 1e6,
+    "detune2": 1e6,
     "dt": 10e-9,
     "totalTime": 100e-6
     }

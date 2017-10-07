@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Sat Oct  7 15:40:42 2017 (-0500)
+# Last-Updated: Sat Oct  7 16:36:24 2017 (-0500)
 #           By: yulu
-#     Update #: 333
+#     Update #: 365
 # 
 
 import numpy as np
@@ -19,19 +19,23 @@ import numpy as np
 
 class optPumping:
     def __init__(self, Dline, excitedF, pumpPol1, pumpPol2):
-
-        # Load D line transition database
+        
+        # Load D line transition database and scale natrual linewidth
         # ---------------------------------------------------------------------------
+        from Constant import gamma 
         if Dline == 'D1':
             if excitedF == 'F1':
+                self.gamma = gamma * 3 / 8 
                 from TransitionStrength import TransStrengthD1_toF1 as TransStrength
                 from TransitionStrength import DecayStrengthD1_toF1 as DecayStrength
             elif excitedF == 'F2':
+                self.gamma = gamms * 5 / 8 
                 from TransitionStrength import TransStrengthD1_toF2 as TransStrength
                 from TransitionStrength import DecayStrengthD1_toF2 as DecayStrength
             else:
                 print("D1 line has not excited hpf states ", Dline)
         elif Dline == 'D2':
+            self.gamma = gamma 
             from TransitionStrength import TransStrengthD2 as TransStrength
             from TransitionStrength import DecayStrengthD2 as DecayStrength
         else:
@@ -99,14 +103,14 @@ class optPumping:
         Gamma = w^3/(3*pi*e0*hBar*c^3) * sum(all transition matrix squared) * scale factor
         Returned factor is for Metcalf yellow book, Ueg^2
         """
-        from Constant import hBar, e0, gamma,c
+        from Constant import hBar, e0,c
         totTransElement  = 0 
         for trans in self.decayMatrix.transition:
             for pol in self.decayMatrix.polarization:
                 totTransElement +=eval('self.decayMatrix.' + pol + '.' + trans + '.sum()');
         einsteinAFactor = (2 * np.pi * self.freq)**3 / (3 * np.pi * e0 * hBar * c**3)
         
-        factor  = gamma / (einsteinAFactor * totTransElement)
+        factor  = self.gamma / (einsteinAFactor * totTransElement)
         return factor 
 
     
@@ -121,7 +125,7 @@ class optPumping:
         """
         Calculate Einstein A coefficient based on Ueg^2
         """
-        from Constant import hBar, e0, gamma,c
+        from Constant import hBar, e0 ,c
         einsteinAFactor = (2 * np.pi * self.freq)**3 / (3 * np.pi * e0 * hBar * c**3)
         return einsteinAFactor * (trans * self.dipoleFactor)
 
@@ -133,22 +137,34 @@ class optPumping:
         from Constant import h, e0, c
         Ueg = np.sqrt(trans * self.dipoleFactor)
         return Ueg * np.sqrt(2 * I /( e0 * c)) / h
-            
+
+    def hpfGamma(self, trans):
+        from Constant import e0, hBar, c 
+        newGamma = (2 * np.pi * self.freq)**3 /(3 * np.pi * e0 * hBar * c**3) * trans * self.dipoleFactor
+        return newGamma
+
+    def detuneFactor(self, trans, detune):
+        hpf_gamma = self.hpfGamma(trans)
+        factor = hpf_gamma / 2 / ((hpf_gamma / 2)**2 + detune**2)
+        ##print(factor)
+        return factor
+    
     def calGroundPop(self, popGround, popExcited, idx, I1, I2, detune1, detune2, dt):
         G1 = popGround['F1'][idx]
         G2 = popGround['F2'][idx]
         newG1 = np.zeros([1, len(G1[0])])
         newG2 = np.zeros([1, len(G2[0])])
-        from Constant import gamma
+        from Constant import gamma, e0, c, hBar
         detuneFactor1 = gamma / 2 / ((gamma / 2)**2 + detune1**2)
         detuneFactor2 = gamma / 2 / ((gamma / 2)**2 + detune2**2)
+        
         for es in self.eStates:
             
-            newG1 += -self.reduceMatrix(self.omega(eval("self.pumpMatrix1.F1_" + self.Dline + "_" + es), I1)**2/2).T * detuneFactor1 * G1 \
+            newG1 += -self.reduceMatrix(self.omega(eval("self.pumpMatrix1.F1_" + self.Dline + "_" + es), I1)**2/2 * self.detuneFactor(eval("self.pumpMatrix1.F1_" + self.Dline + "_" + es), detune1)).T  * G1 \
                      + np.dot(popExcited[es][idx],  self.einsteinA(eval("self.decayMatrix.sigmaPlus." + es + "_" + self.Dline + "_F1"))) \
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.sigmaMinus." + es + "_" + self.Dline + "_F1")))\
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.pi." + es + "_" + self.Dline + "_F1")))
-            newG2 += -self.reduceMatrix(self.omega(eval("self.pumpMatrix1.F2_" + self.Dline + "_" + es), I2)**2 / 2).T * detuneFactor2 * G2 \
+            newG2 += -self.reduceMatrix(self.omega(eval("self.pumpMatrix1.F2_" + self.Dline + "_" + es), I2)**2/2 * self.detuneFactor(eval("self.pumpMatrix1.F2_" + self.Dline + "_" + es), detune2)).T * G2\
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.sigmaPlus." + es + "_" + self.Dline + "_F2")))\
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.sigmaMinus." + es + "_" + self.Dline + "_F2")))\
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.pi." + es + "_" + self.Dline + "_F2")))
@@ -165,10 +181,10 @@ class optPumping:
             newE[es] = np.zeros([1, len(popExcited[es][idx][0])])
         for p in self.pol:
             for gs,I, detune, pumpMatrix in zip(['F1', 'F2'], [I1, I2], [detune1, detune2], [self.pumpMatrix1, self.pumpMatrix2]):
-                detuneFactor = gamma / 2 / ((gamma / 2)**2 + detune**2)
+                #detuneFactor = gamma / 2 / ((gamma / 2)**2 + detune**2)
                 for es in self.eStates: # loop thru excited hyperfine states names 
                 # 3.0 factor is to compensate repeating sum of polarization
-                    newE[es] += np.dot(popGround[gs][idx], self.omega(eval("pumpMatrix." + gs + "_" + self.Dline + "_" + es), I)**2 /2 ) / 3.0 * detuneFactor\
+                    newE[es] += np.dot(popGround[gs][idx], self.omega(eval("pumpMatrix." + gs + "_" + self.Dline + "_" + es), I)**2 /2 * self.detuneFactor(eval("pumpMatrix." + gs + "_" + self.Dline + "_" + es), detune)) / 3.0 \
                             - self.reduceMatrix(self.einsteinA(eval("self.decayMatrix." + p + "." + es + "_" + self.Dline + "_" + gs))).T * popExcited[es][idx]
         for es in self.eStates:
             newE[es] = popExcited[es][idx] + newE[es] * dt
