@@ -10,9 +10,9 @@
 # 
 # Created: Thu Oct  5 17:52:51 2017 (-0500)
 # Version: 
-# Last-Updated: Sat Oct  7 21:45:16 2017 (-0500)
+# Last-Updated: Sat Oct  7 22:03:41 2017 (-0500)
 #           By: yulu
-#     Update #: 45
+#     Update #: 47
 # 
 
 
@@ -24,7 +24,7 @@ def plotPop( clock,  Dline, eStates, polorization1, polorization2, I1, I2, popG,
     excitedState = '2P3/2(unresolved)' if Dline == 'D2' else eStates[0]
     lw = 3
     
-    fig = plt.figure(figsize = (15, 15))
+    fig = plt.figure(figsize = (15, 15), dpi = 150)
     ax1 = fig.add_subplot(211)
     ax2 = fig.add_subplot(212)
     
@@ -51,7 +51,7 @@ def plotPop( clock,  Dline, eStates, polorization1, polorization2, I1, I2, popG,
     if saveFig:
         if not os.path.isdir("./img/"):
             os.mkdir("img")
-        fileName = "./img/Dline" + "_to" + excitedState + "_" + polorization1 + "_" + polorization2 + ".jpg"
+        fileName = "./img/Dline" + "_to" + excitedState + "_" + polorization1 + "_" + polorization2 + ".png"
         fig.savefig(fileName)
         print("-----------------------------------------------")
         print("plots saved in ./img/" + fileName)
