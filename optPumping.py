@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Sat Oct  7 16:36:24 2017 (-0500)
+# Last-Updated: Sat Oct  7 21:59:36 2017 (-0500)
 #           By: yulu
-#     Update #: 365
+#     Update #: 376
 # 
 
 import numpy as np
@@ -95,7 +95,6 @@ class optPumping:
         # Calculate overall factor for dipole matrix normalization
         # ---------------------------------------------------------------------------
         self.dipoleFactor = self.dipoleScaleFactor()
-        print("factor : ", self.dipoleFactor)
                 
     def dipoleScaleFactor(self):
         """
@@ -137,24 +136,24 @@ class optPumping:
         from Constant import h, e0, c
         Ueg = np.sqrt(trans * self.dipoleFactor)
         return Ueg * np.sqrt(2 * I /( e0 * c)) / h
-
-    def hpfGamma(self, trans):
-        from Constant import e0, hBar, c 
-        newGamma = (2 * np.pi * self.freq)**3 /(3 * np.pi * e0 * hBar * c**3) * trans * self.dipoleFactor
-        return newGamma
-
+    
     def detuneFactor(self, trans, detune):
-        hpf_gamma = self.hpfGamma(trans)
+        """
+        Calculate the detune factor f = gamma / 2 / ((gamma / 2)^2 + delta^2 for 
+        light absorption rate: R = Omega^2 * f
+        """
+        from Constant import e0, hBar, c
+        # Calculate natural line width for hpf states
+        hpf_gamma = (2 * np.pi * self.freq)**3 /(3 * np.pi * e0 * hBar * c**3) * trans * self.dipoleFactor
         factor = hpf_gamma / 2 / ((hpf_gamma / 2)**2 + detune**2)
-        ##print(factor)
         return factor
     
     def calGroundPop(self, popGround, popExcited, idx, I1, I2, detune1, detune2, dt):
+        from Constant import gamma, e0, c, hBar
         G1 = popGround['F1'][idx]
         G2 = popGround['F2'][idx]
         newG1 = np.zeros([1, len(G1[0])])
         newG2 = np.zeros([1, len(G2[0])])
-        from Constant import gamma, e0, c, hBar
         detuneFactor1 = gamma / 2 / ((gamma / 2)**2 + detune1**2)
         detuneFactor2 = gamma / 2 / ((gamma / 2)**2 + detune2**2)
         
@@ -164,7 +163,7 @@ class optPumping:
                      + np.dot(popExcited[es][idx],  self.einsteinA(eval("self.decayMatrix.sigmaPlus." + es + "_" + self.Dline + "_F1"))) \
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.sigmaMinus." + es + "_" + self.Dline + "_F1")))\
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.pi." + es + "_" + self.Dline + "_F1")))
-            newG2 += -self.reduceMatrix(self.omega(eval("self.pumpMatrix1.F2_" + self.Dline + "_" + es), I2)**2/2 * self.detuneFactor(eval("self.pumpMatrix1.F2_" + self.Dline + "_" + es), detune2)).T * G2\
+            newG2 += -self.reduceMatrix(self.omega(eval("self.pumpMatrix1.F2_" + self.Dline + "_" + es), I2)**2/2 * self.detuneFactor(eval("self.pumpMatrix1.F2_" + self.Dline + "_" + es), detune2)).T * G2 \
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.sigmaPlus." + es + "_" + self.Dline + "_F2")))\
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.sigmaMinus." + es + "_" + self.Dline + "_F2")))\
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.pi." + es + "_" + self.Dline + "_F2")))
@@ -180,8 +179,7 @@ class optPumping:
         for es in self.eStates: # loop thru excited states names
             newE[es] = np.zeros([1, len(popExcited[es][idx][0])])
         for p in self.pol:
-            for gs,I, detune, pumpMatrix in zip(['F1', 'F2'], [I1, I2], [detune1, detune2], [self.pumpMatrix1, self.pumpMatrix2]):
-                #detuneFactor = gamma / 2 / ((gamma / 2)**2 + detune**2)
+            for gs, I, detune, pumpMatrix in zip(['F1', 'F2'], [I1, I2], [detune1, detune2], [self.pumpMatrix1, self.pumpMatrix2]):
                 for es in self.eStates: # loop thru excited hyperfine states names 
                 # 3.0 factor is to compensate repeating sum of polarization
                     newE[es] += np.dot(popGround[gs][idx], self.omega(eval("pumpMatrix." + gs + "_" + self.Dline + "_" + es), I)**2 /2 * self.detuneFactor(eval("pumpMatrix." + gs + "_" + self.Dline + "_" + es), detune)) / 3.0 \
@@ -193,5 +191,5 @@ class optPumping:
     
     
     def checkUniformity(self, popGround,  popExcited):
-        return popGround['F1'].sum() + popGround['F2'].sum() + sum([popExcited[str(x)].sum() for x in popExcited])
+        return popGround['F1'][-1].sum() + popGround['F2'][-1].sum() + sum([popExcited[str(x)][-1].sum() for x in popExcited])
     

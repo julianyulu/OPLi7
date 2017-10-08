@@ -9,9 +9,9 @@
 # 
 # Created: Wed Sep 20 15:34:21 2017 (-0500)
 # Version: 
-# Last-Updated: Sat Oct  7 15:24:14 2017 (-0500)
+# Last-Updated: Sat Oct  7 21:55:13 2017 (-0500)
 #           By: yulu
-#     Update #: 245
+#     Update #: 252
 # 
 
 
@@ -70,8 +70,9 @@ def main(Dline,
         'F = 2, m = 0, pop =', popG['F2'][-1][0][2], '\n',\
         'F = 2, m = 1, pop =', popG['F2'][-1][0][3], '\n',\
         'F = 2, m = 2, pop =', popG['F2'][-1][0][4], '\n')
+        
+    print("End simulation total population check: ", p.checkUniformity(popG, popE) )
     
-    #print("Total population: ", p.checkUniformity(G1,G2,E0, E1, E2, E3) )
     if plot:
         params = {
             "clock": clock,

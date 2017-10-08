@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 15:57:32 2017 (-0500)
 # Version: 
-# Last-Updated: Sat Oct  7 16:37:29 2017 (-0500)
+# Last-Updated: Sat Oct  7 21:58:48 2017 (-0500)
 #           By: yulu
-#     Update #: 72
+#     Update #: 76
 # 
 
 input = {
@@ -19,14 +19,12 @@ input = {
     "polorization2": "pi",
     "Dline": "D2",
     "excited_hpf_state": 'F2',
-    #Isat ": 2.56
-    #Isat ": 7.00
-    "I1": 1, #[mW/cm^2]
+    "I1": 40, #[mW/cm^2]
     "I2": 0, #[mW/cm^2]
     "detune1": 1e6,
     "detune2": 1e6,
     "dt": 10e-9,
-    "totalTime": 100e-6
+    "totalTime": 50e-6
     }
 
 
