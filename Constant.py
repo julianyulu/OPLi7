@@ -9,17 +9,17 @@
 # 
 # Created: Sun Sep 17 15:57:32 2017 (-0500)
 # Version: 
-# Last-Updated: Sat Oct  7 21:58:48 2017 (-0500)
-#           By: yulu
-#     Update #: 76
+# Last-Updated: Mon Oct  9 13:41:51 2017 (-0500)
+#           By: superlu
+#     Update #: 80
 # 
 
 input = {
     "polorization1": "pi",
     "polorization2": "pi",
     "Dline": "D2",
-    "excited_hpf_state": 'F2',
-    "I1": 40, #[mW/cm^2]
+    "excited_hpf_state": 'F1',
+    "I1": 50, #[mW/cm^2]
     "I2": 0, #[mW/cm^2]
     "detune1": 1e6,
     "detune2": 1e6,

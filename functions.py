@@ -1,26 +1,25 @@
-# main.py --- 
+# functions.py --- 
 # 
-# Filename: main.py
+# Filename: functions.py
 # Description: 
-# 
+#            Functions for post-simulation analysis
 # Author:    Yu Lu
 # Email:     yulu@utexas.edu
 # Github:    https://github.com/SuperYuLu 
 # 
-# Created: Wed Sep 20 15:34:21 2017 (-0500)
+# Created: Mon Oct  9 10:16:45 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  9 13:59:46 2017 (-0500)
+# Last-Updated: Mon Oct  9 13:56:48 2017 (-0500)
 #           By: superlu
-#     Update #: 253
+#     Update #: 56
 # 
 
 
 from optPumping import optPumping
 from Constant import input
 import numpy as np
-from plot import plotPop
 
-def main(Dline,
+def runSimu(Dline,
          excited_hpf_state,
          I1,
          I2,
@@ -29,8 +28,8 @@ def main(Dline,
          polorization1,
          polorization2,
          totalTime,
-         dt,
-         plot = True):
+         dt):
+        
 
     p = optPumping(Dline, excited_hpf_state, polorization1, polorization2)
     I1 = I1 * 10 # Convert mW/cm^2 to W/m^2
@@ -58,39 +57,40 @@ def main(Dline,
             if abs( unitCheck- 1) > 0.1:
                 print("Total population: ", unitCheck, " off too much, cycle: ", i)
                 return 0 
-    clock = np.linspace(0, totalTime, numSteps) * 1e6 # [us]
+    clock = np.linspace(0, totalTime, numSteps) # in seconds 
+    return (clock, popG, popE)
+
+
+def findSteadyState(clock, popGround, popExcited):
+    """
+    Find the time for optical pumping to reach 
+    steady states and correspongding population 
+    for each ground and excited hpf states
+    """
+
+    try:
+        states = popExcited['F1']
+    except KeyError:
+        states = popExcited['F2']
+
+    states = popGround['F2']
+    steadyIdx = 0
+    for i in range(len(clock)):
+        
+        if i <10:
+            pass
+        else:
+            if (abs(np.average(states[i-5:i]) - np.average(states[i:i+5])) < 1e-6).all():
+               steadyIdx = i
+               break
+           
+    steadyG = {}
+    steadyE = {}
+    for key in popExcited:
+        steadyE[key] = popExcited[key][steadyIdx]
+    for key in popGround:
+        steadyG[key] = popGround[key][steadyIdx]
+        
+    return clock[steadyIdx], steadyG, steadyE
+
     
-    print(
-        '--------------------------------------------------\n',\
-        'F = 1, m = -1, pop =', popG['F1'][-1][0][0], '\n',\
-        'F = 1, m = -0, pop =', popG['F1'][-1][0][1], '\n',\
-        'F = 1, m = 1, pop =', popG['F1'][-1][0][2], '\n',\
-        'F = 2, m = -2, pop =', popG['F2'][-1][0][0], '\n',\
-        'F = 2, m = -1, pop =', popG['F2'][-1][0][1], '\n',\
-        'F = 2, m = 0, pop =', popG['F2'][-1][0][2], '\n',\
-        'F = 2, m = 1, pop =', popG['F2'][-1][0][3], '\n',\
-        'F = 2, m = 2, pop =', popG['F2'][-1][0][4], '\n')
-        
-    print("End simulation total population check: ", p.checkUniformity(popG, popE) )
-    
-    if plot:
-        params = {
-            "clock": clock,
-            "Dline": Dline,
-            "eStates": p.eStates,
-            "polorization1": polorization1,
-            "polorization2": polorization2,
-            "I1": I1,
-            "I2": I2,
-            "popG": popG,
-            "popE": popE,
-            "saveFig": False
-            }
-        
-        plotPop(**params)
-       
-if __name__ == "__main__":
-    main(**input)
-    
-        
-        

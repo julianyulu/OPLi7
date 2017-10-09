@@ -10,9 +10,9 @@
 # 
 # Created: Thu Oct  5 17:52:51 2017 (-0500)
 # Version: 
-# Last-Updated: Sat Oct  7 22:03:41 2017 (-0500)
-#           By: yulu
-#     Update #: 47
+# Last-Updated: Mon Oct  9 13:57:28 2017 (-0500)
+#           By: superlu
+#     Update #: 52
 # 
 
 
@@ -31,19 +31,19 @@ def plotPop( clock,  Dline, eStates, polorization1, polorization2, I1, I2, popG,
     for f in ['F1', 'F2']:# Ground states
         fNum = int(f[-1])
         for i in range(2 * fNum + 1):
-            ax1.plot(clock, [x[0][i] for x in popG[f]], "-", \
+            ax1.plot(clock * 1e6, [x[0][i] for x in popG[f]], "-", \
                      label = "F=" + str(fNum) + ", m=" + str(-fNum+ i), linewidth = lw)
     ax1.set_title('Li7 ' +  Dline + ' transition ground(top) and excited(bottom)  hpf states population\n' \
-                  + 'F1 -> ' + excitedState + ': ' + polorization1 + ' pol.  ' + str(I1*0.1) + ' mW/cm2 || ' \
-                  + 'F2 -> ' + excitedState + ': ' + polorization2 + ' pol.  ' + str(I2*0.1) + ' mW/cm2')
+                  + 'F1 -> ' + excitedState + ': ' + polorization1 + ' pol.  ' + str(I1) + ' mW/cm2 || ' \
+                  + 'F2 -> ' + excitedState + ': ' + polorization2 + ' pol.  ' + str(I2) + ' mW/cm2')
     ax1.set_xlabel('Time [us]')
     ax1.legend(fontsize = 8)
 
     
-    for f in eStates:#p.eStates:
+    for f in list(popE.keys()):#p.eStates:
         fNum = int(f[-1])
         for i in range(2 * fNum + 1):
-            ax2.plot(clock, [x[0][i] for x in popE[f]], "-",\
+            ax2.plot(clock * 1e6, [x[0][i] for x in popE[f]], "-",\
                      label = "F=" + str(fNum) + ", m=" + str(-fNum+ i), linewidth = lw)
     ax2.set_xlabel('Time [us]')
     ax2.legend(fontsize = 8)

@@ -3,13 +3,15 @@ FILES :=	\
 	optPumping.py	\
 	TransitionStrength.py\
 	plot.py\
-	main.py
+	main.py\
+	functions.py\
+	singleRun.py
 
 
 
+single: 
+	python3 singleRun.py
 
-main: Constant.py optPumping.py TransitionStrength.py plot.py
-	python3 main.py
 
 check:
 	@not_found=0;
