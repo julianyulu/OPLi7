@@ -11,9 +11,9 @@
 # 
 # Created: Mon Oct  9 10:28:14 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  9 13:59:42 2017 (-0500)
+# Last-Updated: Mon Oct  9 14:11:42 2017 (-0500)
 #           By: superlu
-#     Update #: 20
+#     Update #: 22
 # 
 
 
@@ -42,7 +42,7 @@ def main():
         print("No steady state reached, extend the simulation time")
     else:
         print("Time for reaching steady state: {:2.2f} us".format(t * 1e6))
-        #nicePrintStates(steady, steadyE)
+        nicePrintStates(steadyG)
 
     plotPop(**params)
     

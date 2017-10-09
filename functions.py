@@ -9,9 +9,9 @@
 # 
 # Created: Mon Oct  9 10:16:45 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  9 13:56:48 2017 (-0500)
+# Last-Updated: Mon Oct  9 14:22:46 2017 (-0500)
 #           By: superlu
-#     Update #: 56
+#     Update #: 71
 # 
 
 
@@ -83,7 +83,6 @@ def findSteadyState(clock, popGround, popExcited):
             if (abs(np.average(states[i-5:i]) - np.average(states[i:i+5])) < 1e-6).all():
                steadyIdx = i
                break
-           
     steadyG = {}
     steadyE = {}
     for key in popExcited:
@@ -93,4 +92,14 @@ def findSteadyState(clock, popGround, popExcited):
         
     return clock[steadyIdx], steadyG, steadyE
 
-    
+def nicePrintStates(pop):
+    fState = list(pop.keys())
+    print(pop)
+    for f in fState:
+        print("\nhpf state:", f)
+        print("====================")
+        for i,p in enumerate(pop[f][0]):
+            mF = -int(f[-1]) + i
+            print("mF = {0:1d} \t {1:1.4f}".format(mF, p))
+        print("\n")
+
