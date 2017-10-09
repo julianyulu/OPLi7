@@ -9,9 +9,9 @@
 # 
 # Created: Mon Oct  9 10:16:45 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  9 14:22:46 2017 (-0500)
+# Last-Updated: Mon Oct  9 15:00:38 2017 (-0500)
 #           By: superlu
-#     Update #: 71
+#     Update #: 73
 # 
 
 
@@ -94,12 +94,11 @@ def findSteadyState(clock, popGround, popExcited):
 
 def nicePrintStates(pop):
     fState = list(pop.keys())
-    print(pop)
     for f in fState:
         print("\nhpf state:", f)
         print("====================")
         for i,p in enumerate(pop[f][0]):
             mF = -int(f[-1]) + i
-            print("mF = {0:1d} \t {1:1.4f}".format(mF, p))
+            print("mF = {0:1d}{1:10.4f}".format(mF, p))
         print("\n")
 

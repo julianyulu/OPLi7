@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  9 13:16:04 2017 (-0500)
+# Last-Updated: Mon Oct  9 14:54:53 2017 (-0500)
 #           By: superlu
-#     Update #: 379
+#     Update #: 387
 # 
 
 import numpy as np
@@ -145,8 +145,16 @@ class optPumping:
         from Constant import e0, hBar, c
         # Calculate natural line width for hpf states
         hpf_gamma = (2 * np.pi * self.freq)**3 /(3 * np.pi * e0 * hBar * c**3) * trans * self.dipoleFactor
-        factor = hpf_gamma / 2 / ((hpf_gamma / 2)**2 + detune**2)
+        x, y = hpf_gamma.shape
+        factor = np.zeros([x, y])
+        for i, j in zip(range(x), range(y)):
+            # Avoid divided by 0 issue 
+            if hpf_gamma[i,j]== 0:
+                factor[i,j] = 0
+            else:
+                factor[i,j] = hpf_gamma[i,j] / 2 / ((hpf_gamma[i,j] / 2)**2 + detune**2) 
         return factor
+    
     
     def calGroundPop(self, popGround, popExcited, idx, I1, I2, detune1, detune2, dt):
         from Constant import gamma, e0, c, hBar

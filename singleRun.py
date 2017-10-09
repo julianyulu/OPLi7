@@ -11,9 +11,9 @@
 # 
 # Created: Mon Oct  9 10:28:14 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  9 14:11:42 2017 (-0500)
+# Last-Updated: Mon Oct  9 15:15:55 2017 (-0500)
 #           By: superlu
-#     Update #: 22
+#     Update #: 29
 # 
 
 
@@ -23,6 +23,7 @@ from functions import *
 from Constant import input 
 
 def main():
+    
     clock, popG, popE = runSimu(**input)
     params = {
         "clock": clock,
@@ -34,8 +35,7 @@ def main():
         "I2": input.get('I2'),
         "popG": popG,
         "popE": popE,
-        "saveFig": False
-            }
+        "saveFig": False}
 
     t, steadyG, steadE = findSteadyState(clock, popG, popE)
     if t == 0:
@@ -45,8 +45,6 @@ def main():
         nicePrintStates(steadyG)
 
     plotPop(**params)
-    
-  
     
 
 if __name__ == '__main__':

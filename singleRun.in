@@ -1,0 +1,10 @@
+polorization1: pi,
+polorization2: pi,
+Dline: D2,
+excited_hpf_state: 'F1',
+I1: 50, #[mW/cm^2]
+I2: 0, #[mW/cm^2]
+detune1: 1e6,
+detune2: 1e6,
+dt: 10e-9,
+totalTime: 50e-6
