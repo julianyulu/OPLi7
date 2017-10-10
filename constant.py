@@ -9,23 +9,10 @@
 # 
 # Created: Sun Sep 17 15:57:32 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  9 15:16:36 2017 (-0500)
-#           By: superlu
-#     Update #: 91
+# Last-Updated: Mon Oct  9 22:53:17 2017 (-0500)
+#           By: yulu
+#     Update #: 93
 # 
-
-input = {
-    "polorization1": "pi",
-    "polorization2": "pi",
-    "Dline": "D2",
-    "excited_hpf_state": 'F1',
-    "I1": 5, #[mW/cm^2]
-    "I2": 0, #[mW/cm^2]
-    "detune1": 0,
-    "detune2": 0,
-    "dt": 10e-9,
-    "totalTime": 50e-6
-}
 
 
 gamma = 35.898e6 # [Hz]Decay rate, lifetime t = 1 / gamma

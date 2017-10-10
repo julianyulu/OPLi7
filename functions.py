@@ -9,14 +9,13 @@
 # 
 # Created: Mon Oct  9 10:16:45 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  9 22:50:55 2017 (-0500)
+# Last-Updated: Mon Oct  9 22:55:01 2017 (-0500)
 #           By: yulu
-#     Update #: 156
+#     Update #: 158
 # 
 
 
 from optPumping import optPumping
-from Constant import input
 import numpy as np
 import sys
 

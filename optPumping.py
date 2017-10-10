@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  9 14:54:53 2017 (-0500)
-#           By: superlu
-#     Update #: 387
+# Last-Updated: Mon Oct  9 22:54:02 2017 (-0500)
+#           By: yulu
+#     Update #: 388
 # 
 
 import numpy as np
@@ -22,7 +22,7 @@ class optPumping:
         
         # Load D line transition database and scale natrual linewidth
         # ---------------------------------------------------------------------------
-        from Constant import gamma 
+        from constant import gamma 
         if Dline == 'D1':
             if excitedF == 'F1':
                 self.gamma = gamma * 3 / 8 
@@ -102,7 +102,7 @@ class optPumping:
         Gamma = w^3/(3*pi*e0*hBar*c^3) * sum(all transition matrix squared) * scale factor
         Returned factor is for Metcalf yellow book, Ueg^2
         """
-        from Constant import hBar, e0,c
+        from constant import hBar, e0,c
         totTransElement  = 0 
         for trans in self.decayMatrix.transition:
             for pol in self.decayMatrix.polarization:
@@ -124,7 +124,7 @@ class optPumping:
         """
         Calculate Einstein A coefficient based on Ueg^2
         """
-        from Constant import hBar, e0 ,c
+        from constant import hBar, e0 ,c
         einsteinAFactor = (2 * np.pi * self.freq)**3 / (3 * np.pi * e0 * hBar * c**3)
         return einsteinAFactor * (trans * self.dipoleFactor)
 
@@ -133,7 +133,7 @@ class optPumping:
         Calculate rabi frequency based on light intensity 
         and relative transition strength from Metcalf's yellow book
         """
-        from Constant import h, e0, c
+        from constant import h, e0, c
         Ueg = np.sqrt(trans * self.dipoleFactor)
         return Ueg * np.sqrt(2 * I /( e0 * c)) / h
     
@@ -142,7 +142,7 @@ class optPumping:
         Calculate the detune factor f = gamma / 2 / ((gamma / 2)^2 + delta^2 for 
         light absorption rate: R = Omega^2 * f
         """
-        from Constant import e0, hBar, c
+        from constant import e0, hBar, c
         # Calculate natural line width for hpf states
         hpf_gamma = (2 * np.pi * self.freq)**3 /(3 * np.pi * e0 * hBar * c**3) * trans * self.dipoleFactor
         x, y = hpf_gamma.shape
@@ -157,7 +157,7 @@ class optPumping:
     
     
     def calGroundPop(self, popGround, popExcited, idx, I1, I2, detune1, detune2, dt):
-        from Constant import gamma, e0, c, hBar
+        from constant import gamma, e0, c, hBar
         G1 = popGround['F1'][idx]
         G2 = popGround['F2'][idx]
         newG1 = np.zeros([1, len(G1[0])])
@@ -182,7 +182,7 @@ class optPumping:
         return pop
 
     def calExcitedPop(self, popGround, popExcited, idx, I1, I2, detune1, detune2, dt):
-        from Constant import gamma
+        from constant import gamma
         newE = {}
         for es in self.eStates: # loop thru excited states names
             newE[es] = np.zeros([1, len(popExcited[es][idx][0])])
