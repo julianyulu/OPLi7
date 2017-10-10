@@ -29,7 +29,7 @@ class optPumping:
                 from TransitionStrength import TransStrengthD1_toF1 as TransStrength
                 from TransitionStrength import DecayStrengthD1_toF1 as DecayStrength
             elif excitedF == 'F2':
-                self.gamma = gamms * 5 / 8 
+                self.gamma = gamma * 5 / 8 
                 from TransitionStrength import TransStrengthD1_toF2 as TransStrength
                 from TransitionStrength import DecayStrengthD1_toF2 as DecayStrength
             else:
@@ -157,13 +157,11 @@ class optPumping:
     
     
     def calGroundPop(self, popGround, popExcited, idx, I1, I2, detune1, detune2, dt):
-        from constant import gamma, e0, c, hBar
         G1 = popGround['F1'][idx]
         G2 = popGround['F2'][idx]
         newG1 = np.zeros([1, len(G1[0])])
         newG2 = np.zeros([1, len(G2[0])])
-        detuneFactor1 = gamma / 2 / ((gamma / 2)**2 + detune1**2)
-        detuneFactor2 = gamma / 2 / ((gamma / 2)**2 + detune2**2)
+
         
         for es in self.eStates:
             
@@ -182,7 +180,6 @@ class optPumping:
         return pop
 
     def calExcitedPop(self, popGround, popExcited, idx, I1, I2, detune1, detune2, dt):
-        from constant import gamma
         newE = {}
         for es in self.eStates: # loop thru excited states names
             newE[es] = np.zeros([1, len(popExcited[es][idx][0])])

@@ -61,8 +61,9 @@ def main(args = ''):
     
 
 if __name__ == '__main__':
-    infile, _, _ = select.select([sys.stdin], [], [], 3)
-    if infile:
-        main(sys.stdin)
-    else:
-        main()
+    main()
+    #infile, _, _ = select.select([sys.stdin], [], [], 3)
+    #if infile:
+    #    main(sys.stdin)
+    #else:
+    #    main()
