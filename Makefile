@@ -3,14 +3,13 @@ FILES :=	\
 	optPumping.py	\
 	TransitionStrength.py\
 	plot.py\
-	main.py\
 	functions.py\
 	singleRun.py
 
 
 
-single: 
-	python3 singleRun.py
+single: singleRun.in
+	python3 singleRun.py < singleRun.in
 
 
 check:

@@ -9,19 +9,24 @@
 # Github:    https://github.com/SuperYuLu 
 # 
 # Created: Thu Oct  5 17:52:51 2017 (-0500)
-# Version: 
-# Last-Updated: Mon Oct  9 13:57:28 2017 (-0500)
+# Version: V1.0
+# Last-Updated: Mon Oct  9 18:38:17 2017 (-0500)
 #           By: superlu
-#     Update #: 52
+#     Update #: 61
 # 
 
 
 
 def plotPop( clock,  Dline, eStates, polorization1, polorization2, I1, I2, popG, popE, saveFig = True):
+    """
+    plot population distrubution for ground and excited states
+    and specify condition in the title 
+    optionally save the figure to ./img/ folder
+    """
     import matplotlib.pyplot as plt
     import os
     
-    excitedState = '2P3/2(unresolved)' if Dline == 'D2' else eStates[0]
+    excitedState = '2P3halves(unresolved)' if Dline == 'D2' else eStates[0]
     lw = 3
     
     fig = plt.figure(figsize = (15, 15), dpi = 150)
@@ -53,6 +58,5 @@ def plotPop( clock,  Dline, eStates, polorization1, polorization2, I1, I2, popG,
             os.mkdir("img")
         fileName = "./img/Dline" + "_to" + excitedState + "_" + polorization1 + "_" + polorization2 + ".png"
         fig.savefig(fileName)
-        print("-----------------------------------------------")
-        print("plots saved in ./img/" + fileName)
+        print("[*]plots saved in ./img/" + fileName)
     plt.show()    

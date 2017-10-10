@@ -9,15 +9,41 @@
 # 
 # Created: Mon Oct  9 10:16:45 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  9 15:00:38 2017 (-0500)
+# Last-Updated: Mon Oct  9 19:28:23 2017 (-0500)
 #           By: superlu
-#     Update #: 73
+#     Update #: 84
 # 
 
 
 from optPumping import optPumping
 from Constant import input
 import numpy as np
+import sys
+
+def readInput(infile):
+    """
+    read input from a file as a dictionary
+    """
+    params = {}
+    # if it is a sys.stdin input 
+    if str(type(infile)) == "<class '_io.TextIOWrapper'>":
+        for line in infile:
+            x = line.rstrip().split(':')
+            try:
+                params[x[0].strip()] = float(x[1].split('#')[0].strip())
+            except ValueError:
+                params[x[0].strip()] = x[1].split('#')[0].strip()
+    # else read from a input file 
+    else:
+        with open(infile, 'r') as f:
+            for line in f:
+                x = line.rstrip().split(':')
+                try:
+                    params[x[0].strip()] = float(x[1].split('#')[0].strip())
+                except ValueError:
+                    params[x[0].strip()] = x[1].split('#')[0].strip()
+    return params
+
 
 def runSimu(Dline,
          excited_hpf_state,
