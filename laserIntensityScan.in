@@ -6,5 +6,9 @@ I1:                            5    # [mW/cm^2]  laser intensity corresponding t
 I2:                             0   # [mW/cm^2]  laser intensity corresponding to polorization1
 detune1:                        0   # [Hz]  laser detune corresponding to polorization1
 detune2:                        0   # [Hz]  laser detune corresponding to polorization1
-dt:                          10e-9    # [s]  simulation time step size 
-maxSimulationTime:           50e-6    # [s]  max simulation time, auto stop if rearch steady state
+scanLaserId:			I1  # 1 or 2 chose laser to scan, 1, 2 corresponding to I1, I2
+startI:				5   # [mW/cm^2] starting scan laser intensity
+endI:				95   # [mW/cm^2] ending scan laser intensity
+dI:				10   # [mW/cm^2] laser intensity scan step size
+dt:                          20e-9    # [s]  simulation time step size 
+maxSimulationTime:           100e-6    # [s]  max simulation time, auto stop if rearch steady state

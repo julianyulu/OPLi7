@@ -11,6 +11,8 @@ FILES :=	\
 single: singleRun.in
 	python3 singleRun.py < singleRun.in
 
+intensityScan: laserIntensityScan.in
+	python3 laserIntensityScan.py < laserIntensityScan.in 
 
 check:
 	@not_found=0;
