@@ -10,9 +10,9 @@
 # 
 # Created: Thu Oct  5 17:52:51 2017 (-0500)
 # Version: V1.0
-# Last-Updated: Mon Oct  9 18:38:17 2017 (-0500)
-#           By: superlu
-#     Update #: 61
+# Last-Updated: Mon Oct  9 22:47:56 2017 (-0500)
+#           By: yulu
+#     Update #: 63
 # 
 
 
@@ -40,9 +40,9 @@ def plotPop( clock,  Dline, eStates, polorization1, polorization2, I1, I2, popG,
                      label = "F=" + str(fNum) + ", m=" + str(-fNum+ i), linewidth = lw)
     ax1.set_title('Li7 ' +  Dline + ' transition ground(top) and excited(bottom)  hpf states population\n' \
                   + 'F1 -> ' + excitedState + ': ' + polorization1 + ' pol.  ' + str(I1) + ' mW/cm2 || ' \
-                  + 'F2 -> ' + excitedState + ': ' + polorization2 + ' pol.  ' + str(I2) + ' mW/cm2')
+                  + 'F2 -> ' + excitedState + ': ' + polorization2 + ' pol.  ' + str(I2) + ' mW/cm2', fontsize = 15)
     ax1.set_xlabel('Time [us]')
-    ax1.legend(fontsize = 8)
+    ax1.legend(fontsize = 12)
 
     
     for f in list(popE.keys()):#p.eStates:
@@ -51,7 +51,7 @@ def plotPop( clock,  Dline, eStates, polorization1, polorization2, I1, I2, popG,
             ax2.plot(clock * 1e6, [x[0][i] for x in popE[f]], "-",\
                      label = "F=" + str(fNum) + ", m=" + str(-fNum+ i), linewidth = lw)
     ax2.set_xlabel('Time [us]')
-    ax2.legend(fontsize = 8)
+    ax2.legend(fontsize = 12)
 
     if saveFig:
         if not os.path.isdir("./img/"):

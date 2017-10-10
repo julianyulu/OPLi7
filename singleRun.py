@@ -11,9 +11,9 @@
 # 
 # Created: Mon Oct  9 10:28:14 2017 (-0500)
 # Version: V1.0
-# Last-Updated: Mon Oct  9 19:27:08 2017 (-0500)
-#           By: superlu
-#     Update #: 66
+# Last-Updated: Mon Oct  9 22:50:04 2017 (-0500)
+#           By: yulu
+#     Update #: 68
 # 
 
 
@@ -36,6 +36,7 @@ def main(args = ''):
         inputParams = readInput("./singleRun.in")
         
     clock, popG, popE = runSimu(**inputParams)
+    print("\n[*] Total simulation time: {:1.2f} us".format(clock[-1] * 1e6))
     params = {
         "clock": clock,
         "Dline":inputParams.get('Dline'),
@@ -53,6 +54,7 @@ def main(args = ''):
         print("\nNo steady state reached, extend the simulation time\nif you want to see it saturates\n")
     else:
         print("\nTime for reaching steady state: {:2.2f} us\n".format(t * 1e6))
+        
         nicePrintStates(steadyG)
 
     plotPop(**params)

@@ -9,9 +9,9 @@
 # 
 # Created: Mon Oct  9 10:16:45 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  9 19:28:23 2017 (-0500)
-#           By: superlu
-#     Update #: 84
+# Last-Updated: Mon Oct  9 22:50:55 2017 (-0500)
+#           By: yulu
+#     Update #: 156
 # 
 
 
@@ -53,19 +53,23 @@ def runSimu(Dline,
          detune2,
          polorization1,
          polorization2,
-         totalTime,
+         maxSimulationTime,
          dt):
         
-
+    
     p = optPumping(Dline, excited_hpf_state, polorization1, polorization2)
     I1 = I1 * 10 # Convert mW/cm^2 to W/m^2
     I2 = I2 * 10 
     # Initialization of population dictionary 
     popG = {} # Ground states population dictionary, dic of list of 2d array
     popE = {} # Excited states population dictionary, dic of list of 2d array
-    numSteps = int(totalTime / dt)
+    #numSteps = int(100e-6/dt) if autoStop else int(maxSimulationTime / dt)
+    numSteps = int(maxSimulationTime / dt)
+
     
-    for i in range(0, numSteps):
+    autoStop = True 
+    breakIdx = 0
+    for i in range(numSteps):
         if i == 0:
             # Initial states
             popG['F1'] = [p.pop_Ground['F1']]
@@ -75,6 +79,7 @@ def runSimu(Dline,
         else:
             newPopG = p.calGroundPop(popG, popE, i-1, I1, I2, detune1, detune2, dt)
             newPopE = p.calExcitedPop(popG, popE, i-1, I1, I2, detune1, detune2, dt)
+
             for f in p.eStates:
                 popE[f].append(newPopE[f])
             popG['F1'].append(newPopG['F1'])
@@ -82,8 +87,20 @@ def runSimu(Dline,
             unitCheck = p.checkUniformity(newPopG, newPopE)
             if abs( unitCheck- 1) > 0.1:
                 print("Total population: ", unitCheck, " off too much, cycle: ", i)
-                return 0 
-    clock = np.linspace(0, totalTime, numSteps) # in seconds 
+                return 0
+
+            # Check if steady state reached, then auto break loop 
+            if autoStop and i > 10 and (abs(np.average(popG['F2'][i-10:i-5])- np.average(popG['F2'][i-5:i])) < 1e-6).all() :
+                breakIdx = i - 5 + int(5e-6 / dt) # add extral 5 us to simulate 
+                autoStop = False
+                
+            if i == breakIdx:
+                print('\n[*] Auto stop simulation, steady state reached !')
+                autoStop = True
+                break
+            
+            
+    clock = np.linspace(0, dt * breakIdx, breakIdx+1) if autoStop else np.linspace(0, maxSimulationTime, numSteps)# in seconds 
     return (clock, popG, popE)
 
 
