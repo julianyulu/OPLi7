@@ -9,9 +9,9 @@
 # 
 # Created: Mon Oct  9 10:16:45 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  9 22:55:01 2017 (-0500)
-#           By: yulu
-#     Update #: 158
+# Last-Updated: Tue Oct 10 11:27:24 2017 (-0500)
+#           By: superlu
+#     Update #: 159
 # 
 
 
@@ -94,7 +94,7 @@ def runSimu(Dline,
                 autoStop = False
                 
             if i == breakIdx:
-                print('\n[*] Auto stop simulation, steady state reached !')
+                print('\n[*] Steady state reached ! Auto stop ...')
                 autoStop = True
                 break
             
