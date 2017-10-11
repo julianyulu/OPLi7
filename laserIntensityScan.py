@@ -11,23 +11,30 @@
 # 
 # Created: Mon Oct  9 23:00:53 2017 (-0500)
 # Version: 
-# Last-Updated: Tue Oct 10 14:10:55 2017 (-0500)
-#           By: superlu
-#     Update #: 24
+# Last-Updated: Tue Oct 10 22:25:00 2017 (-0500)
+#           By: yulu
+#     Update #: 29
 # 
 
-
-import sys, select
 import numpy as np
 from functions import readInput, runSimu, findSteadyState, nicePrintStates
 from plot import plotIntensityScan
 
-def main(args = ''):
+def main():
+    """
+    Simulate specified optical pumping process under different
+    laser intensity. 
+    Plot the steady state population and time to reach steady
+    state for different laser intensity.
+    Input parameters should be specified in laserIntensityScan.in
+    """
     
-    if args:
-        inputParams = readInput(args)
-    else:
+    # load input parameters 
+    try:
         inputParams = readInput("./laserIntensityScan.in")
+    except FileNotFoundError:
+        print("No file 'laserIntensityScan.in' avaliable in ./")
+        raise FileNotFoundError
 
     startI = inputParams.get('startI')
     endI = inputParams.get('endI')
@@ -69,8 +76,4 @@ def main(args = ''):
 
 
 if __name__ == '__main__':
-    infile, _, _ = select.select([sys.stdin], [], [], 3)
-    if infile:
-        main(sys.stdin)
-    else:
-        main()
+    main()

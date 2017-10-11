@@ -13,23 +13,31 @@
 # 
 # Created: Tue Oct 10 11:29:11 2017 (-0500)
 # Version: 
-# Last-Updated: Tue Oct 10 14:10:54 2017 (-0500)
-#           By: superlu
-#     Update #: 3
+# Last-Updated: Tue Oct 10 22:25:09 2017 (-0500)
+#           By: yulu
+#     Update #: 8
 # 
 
 
-import sys, select
 import numpy as np
 from functions import readInput, runSimu, findSteadyState, nicePrintStates
 from plot import plotDetuneScan
 
-def main(args = ''):
-    if args:
-        inputParams = readInput(args)
-    else:
+def main():
+    """
+    Simulate specified optical pumping process under different
+    laser frequency detune. 
+    Plot the steady state population and time to reach steady
+    state for different detune frequency.
+    Input parameters should be specified in laserDetuneScan.in
+    """
+            
+    # load input parameters 
+    try:
         inputParams = readInput("./laserDetuneScan.in")
-
+    except FileNotFoundError:
+        print("No file 'laserDetuneScan.in' avaliable in ./")
+        raise FileNotFoundError
     
     startD = inputParams.get('startDetune')
     endD = inputParams.get('endDetune')
