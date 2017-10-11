@@ -11,9 +11,9 @@
 # 
 # Created: Mon Oct  9 10:28:14 2017 (-0500)
 # Version: V1.0
-# Last-Updated: Tue Oct 10 22:21:47 2017 (-0500)
-#           By: yulu
-#     Update #: 76
+# Last-Updated: Wed Oct 11 17:04:19 2017 (-0500)
+#           By: superlu
+#     Update #: 77
 # 
 
 
@@ -41,8 +41,8 @@ def main():
         "clock": clock,
         "Dline":inputParams.get('Dline'),
         "eStates": [inputParams.get('excited_hpf_state')],
-        "polorization1": inputParams.get('polorization1'),
-        "polorization2": inputParams.get('polorization2'),
+        "polarization1": inputParams.get('polarization1'),
+        "polarization2": inputParams.get('polarization2'),
         "I1": inputParams.get('I1'),
         "I2": inputParams.get('I2'),
         "popG": popG,

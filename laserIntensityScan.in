@@ -1,11 +1,11 @@
 Dline:                         D2   # chose D1 or D2 line to simulate 
 excited_hpf_state:             F1   # In case its D1 line, specify the excited hpf F
-polorization1:                 pi   # polarization for transition from ground F = 1
-polorization2:                 pi   # polarization for transition from ground F = 2  
-I1:                            5    # [mW/cm^2]  laser intensity corresponding to polorization1
-I2:                             0   # [mW/cm^2]  laser intensity corresponding to polorization1
-detune1:                        0   # [Hz]  laser detune corresponding to polorization1
-detune2:                        0   # [Hz]  laser detune corresponding to polorization1
+polarization1:                 pi   # polarization for transition from ground F = 1
+polarization2:                 pi   # polarization for transition from ground F = 2  
+I1:                            5    # [mW/cm^2]  laser intensity corresponding to polarization1
+I2:                             0   # [mW/cm^2]  laser intensity corresponding to polarization2
+detune1:                        0   # [Hz]  laser detune corresponding to polarization1
+detune2:                        0   # [Hz]  laser detune corresponding to polarization2
 scanLaserId:			I1  # 1 or 2 chose laser to scan, 1, 2 corresponding to I1, I2
 startI:				5   # [mW/cm^2] starting scan laser intensity
 endI:				95   # [mW/cm^2] ending scan laser intensity

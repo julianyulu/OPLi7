@@ -9,9 +9,9 @@
 # 
 # Created: Mon Oct  9 10:16:45 2017 (-0500)
 # Version: 
-# Last-Updated: Tue Oct 10 11:27:24 2017 (-0500)
+# Last-Updated: Wed Oct 11 17:09:59 2017 (-0500)
 #           By: superlu
-#     Update #: 159
+#     Update #: 162
 # 
 
 
@@ -49,13 +49,13 @@ def runSimu(Dline,
          I2,
          detune1,
          detune2,
-         polorization1,
-         polorization2,
+         polarization1,
+         polarization2,
          maxSimulationTime,
          dt):
         
     
-    p = optPumping(Dline, excited_hpf_state, polorization1, polorization2)
+    p = optPumping(Dline, excited_hpf_state, polarization1, polarization2)
     I1 = I1 * 10 # Convert mW/cm^2 to W/m^2
     I2 = I2 * 10 
     # Initialization of population dictionary 
@@ -96,8 +96,6 @@ def runSimu(Dline,
                 print('\n[*] Steady state reached ! Auto stop ...')
                 autoStop = True
                 break
-            
-            
     clock = np.linspace(0, dt * breakIdx, breakIdx+1) if breakIdx else np.linspace(0, maxSimulationTime, numSteps) # in seconds 
     print("breakIdx:", breakIdx, "clock", len(clock))
     return (clock, popG, popE)

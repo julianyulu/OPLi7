@@ -10,14 +10,14 @@
 # 
 # Created: Thu Oct  5 17:52:51 2017 (-0500)
 # Version: V1.0
-# Last-Updated: Tue Oct 10 11:28:09 2017 (-0500)
+# Last-Updated: Wed Oct 11 17:17:29 2017 (-0500)
 #           By: superlu
-#     Update #: 83
+#     Update #: 84
 # 
 
 
 
-def plotPop( clock,  Dline, eStates, polorization1, polorization2, I1, I2, popG, popE, saveFig = True):
+def plotPop( clock,  Dline, eStates, polarization1, polarization2, I1, I2, popG, popE, saveFig = True):
     """
     plot population distrubution for ground and excited states
     and specify condition in the title 
@@ -39,8 +39,8 @@ def plotPop( clock,  Dline, eStates, polorization1, polorization2, I1, I2, popG,
             ax1.plot(clock * 1e6, [x[0][i] for x in popG[f]], "-", \
                      label = "F=" + str(fNum) + ", m=" + str(-fNum+ i), linewidth = lw)
     ax1.set_title('Li7 ' +  Dline + ' transition ground(top) and excited(bottom)  hpf states population\n' \
-                  + 'F1 -> ' + excitedState + ': ' + polorization1 + ' pol.  ' + str(I1) + ' mW/cm2 || ' \
-                  + 'F2 -> ' + excitedState + ': ' + polorization2 + ' pol.  ' + str(I2) + ' mW/cm2', fontsize = 15)
+                  + 'F1 -> ' + excitedState + ': ' + polarization1 + ' pol.  ' + str(I1) + ' mW/cm2 || ' \
+                  + 'F2 -> ' + excitedState + ': ' + polarization2 + ' pol.  ' + str(I2) + ' mW/cm2', fontsize = 15)
     ax1.set_xlabel('Time [us]')
     ax1.legend(fontsize = 12)
 
@@ -56,7 +56,7 @@ def plotPop( clock,  Dline, eStates, polorization1, polorization2, I1, I2, popG,
     if saveFig:
         if not os.path.isdir("./img/"):
             os.mkdir("img")
-        fileName = "./img/Dline" + "_to" + excitedState + "_" + polorization1 + "_" + polorization2 + ".png"
+        fileName = "./img/Dline" + "_to" + excitedState + "_" + polarization1 + "_" + polarization2 + ".png"
         fig.savefig(fileName)
         print("[*]plots saved in ./img/" + fileName)
     plt.show()    
