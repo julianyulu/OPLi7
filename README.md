@@ -16,10 +16,12 @@ However, apart from the ideal case of a two-level cycling transition, more gener
 
 Above shown is the D line transitions of the two main lithium isotopes. This study will focus on the element Li7. The D1 line excited state of Li7 is not well resolved due to that fact that their seperation is much smaller than natrual linewidth, so effectively its a single level but with hiden states. In comparison, the D1 line of Li 7 excited state is well seperated and thus has to be trated individually. This simulation is to study the dynamics os population transfer of the magnetic sublevels of hpf states under different laser frequency, polarization, intensity, etc.   
 
-## Selections Rules  
-F = 0, +1, -1;  
-m = 0, +1, -1;  
-when F = 0, only m = +1 and -1 are allowd  
+## Selections Rules    
+The change of hpf states magnetic sublevels are limited to *selsection rules*, the 
+\DeltaF = 0, +1, -1;  
+\Deltam = 0, +1, -1;  
+when \DeltaF = 0, only \Deltam = +1, -1 are allowd  
 
 ## Simulation principles  
+This simulation is based on the *Optical Bloch equations* for two level system, modified and extened it to multi-level systems in lithium. The code is based on the key relations as below:  
 
