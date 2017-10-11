@@ -34,7 +34,7 @@ def main():
     except FileNotFoundError:
         print("No file 'singleRun.in' avaliable in ./")
         raise FileNotFoundError
-        
+
     clock, popG, popE = runSimu(**inputParams)
     print("\n[*] Total simulation time: {:1.2f} us".format(clock[-1] * 1e6))
     params = {

@@ -17,7 +17,6 @@
 
 from optPumping import optPumping
 import numpy as np
-import sys
 
 def readInput(infile):
     """
@@ -99,7 +98,8 @@ def runSimu(Dline,
                 break
             
             
-    clock = np.linspace(0, dt * breakIdx, breakIdx+1) if autoStop else np.linspace(0, maxSimulationTime, numSteps)# in seconds 
+    clock = np.linspace(0, dt * breakIdx, breakIdx+1) if breakIdx else np.linspace(0, maxSimulationTime, numSteps) # in seconds 
+    print("breakIdx:", breakIdx, "clock", len(clock))
     return (clock, popG, popE)
 
 

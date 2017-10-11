@@ -105,7 +105,7 @@ class optPumping:
         from constant import hBar, e0,c
         totTransElement  = 0 
         for trans in self.decayMatrix.transition:
-            for pol in self.decayMatrix.polarization:
+            for pol in self.pol:
                 totTransElement +=eval('self.decayMatrix.' + pol + '.' + trans + '.sum()');
         einsteinAFactor = (2 * np.pi * self.freq)**3 / (3 * np.pi * e0 * hBar * c**3)
         
@@ -169,7 +169,7 @@ class optPumping:
                      + np.dot(popExcited[es][idx],  self.einsteinA(eval("self.decayMatrix.sigmaPlus." + es + "_" + self.Dline + "_F1"))) \
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.sigmaMinus." + es + "_" + self.Dline + "_F1")))\
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.pi." + es + "_" + self.Dline + "_F1")))
-            newG2 += -self.reduceMatrix(self.omega(eval("self.pumpMatrix1.F2_" + self.Dline + "_" + es), I2)**2/2 * self.detuneFactor(eval("self.pumpMatrix1.F2_" + self.Dline + "_" + es), detune2)).T * G2 \
+            newG2 += -self.reduceMatrix(self.omega(eval("self.pumpMatrix2.F2_" + self.Dline + "_" + es), I2)**2/2 * self.detuneFactor(eval("self.pumpMatrix2.F2_" + self.Dline + "_" + es), detune2)).T * G2 \
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.sigmaPlus." + es + "_" + self.Dline + "_F2")))\
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.sigmaMinus." + es + "_" + self.Dline + "_F2")))\
                      + np.dot(popExcited[es][idx], self.einsteinA(eval("self.decayMatrix.pi." + es + "_" + self.Dline + "_F2")))

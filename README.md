@@ -18,9 +18,9 @@ Above shown is the D line transitions of the two main lithium isotopes. This stu
 
 ## Selections Rules    
 The change of hpf states magnetic sublevels are limited to *selsection rules*, the 
-\DeltaF = 0, +1, -1;  
-\Deltam = 0, +1, -1;  
-when \DeltaF = 0, only \Deltam = +1, -1 are allowd  
+Delta_F = 0, +1, -1;  
+Delta_m = 0, +1, -1;  
+when Delta_F = 0, only Delta_m = +1, -1 are allowd  
 
 ## Simulation principles  
 This simulation is based on the *Optical Bloch equations* for two level system, modified and extened it to multi-level systems in lithium. The code is based on the key relations as below:  
