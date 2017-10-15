@@ -4,7 +4,7 @@ polarization1:           sigmaPlus   # polarization for transition from ground F
 polarization2:           sigmaPlus   # polarization for transition from ground F = 2  
 I1:                            6    # [mW/cm^2]  laser intensity corresponding to polarization1
 I2:                            6   # [mW/cm^2]  laser intensity corresponding to polarization1
-detune1:    			0   # [Hz]  laser detune corresponding to polarization1
-detune2:                        0   # [Hz]  laser detune corresponding to polarization1
+detune1:    		       0   # [Hz]  laser detune corresponding to polarization1
+detune2:                       0   # [Hz]  laser detune corresponding to polarization1
 dt:                          10e-9    # [s]  simulation time step size 
-maxSimulationTime:           100e-6    # [s]  max simulation time, auto stop if rearch steady state
+maxSimulationTime:           50e-6    # [s]  max simulation time, auto stop if rearch steady state

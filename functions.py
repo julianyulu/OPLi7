@@ -9,9 +9,9 @@
 # 
 # Created: Mon Oct  9 10:16:45 2017 (-0500)
 # Version: 
-# Last-Updated: Wed Oct 11 17:09:59 2017 (-0500)
-#           By: superlu
-#     Update #: 162
+# Last-Updated: Sun Oct 15 15:20:44 2017 (-0500)
+#           By: yulu
+#     Update #: 165
 # 
 
 
@@ -65,7 +65,7 @@ def runSimu(Dline,
     numSteps = int(maxSimulationTime / dt)
 
     
-    autoStop = True 
+    autoStop = False
     breakIdx = 0
     for i in range(numSteps):
         if i == 0:

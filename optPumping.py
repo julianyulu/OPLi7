@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Mon Oct  9 22:54:02 2017 (-0500)
+# Last-Updated: Sun Oct 15 15:17:24 2017 (-0500)
 #           By: yulu
-#     Update #: 388
+#     Update #: 402
 # 
 
 import numpy as np
@@ -33,7 +33,7 @@ class optPumping:
                 from TransitionStrength import TransStrengthD1_toF2 as TransStrength
                 from TransitionStrength import DecayStrengthD1_toF2 as DecayStrength
             else:
-                print("D1 line has not excited hpf states ", Dline)
+                print("D1 line has not excited hpf state ", Dline)
         elif Dline == 'D2':
             self.gamma = gamma 
             from TransitionStrength import TransStrengthD2 as TransStrength
@@ -73,7 +73,7 @@ class optPumping:
         
         # Initialize number of excited hyperfine magnetic substates F
         # ---------------------------------------------------------------------------
-        self.numEStates = len(DecayStrength.numSubStates)
+        # self.numEStates = len(DecayStrength.numSubStates)
 
         # Initialize excited hyperfine states name
         # ---------------------------------------------------------------------------
@@ -126,7 +126,8 @@ class optPumping:
         """
         from constant import hBar, e0 ,c
         einsteinAFactor = (2 * np.pi * self.freq)**3 / (3 * np.pi * e0 * hBar * c**3)
-        return einsteinAFactor * (trans * self.dipoleFactor)
+        einsteinA = einsteinAFactor * (trans * self.dipoleFactor)
+        return einsteinA
 
     def omega(self, trans, I):
         """
@@ -147,12 +148,15 @@ class optPumping:
         hpf_gamma = (2 * np.pi * self.freq)**3 /(3 * np.pi * e0 * hBar * c**3) * trans * self.dipoleFactor
         x, y = hpf_gamma.shape
         factor = np.zeros([x, y])
-        for i, j in zip(range(x), range(y)):
-            # Avoid divided by 0 issue 
-            if hpf_gamma[i,j]== 0:
-                factor[i,j] = 0
-            else:
-                factor[i,j] = hpf_gamma[i,j] / 2 / ((hpf_gamma[i,j] / 2)**2 + detune**2) 
+        for i in range(x):
+            for j in range(y):
+                # Avoid divided by 0 issue 
+                if hpf_gamma[i,j]== 0:
+                    factor[i,j] = 0
+                else:
+                    factor[i,j] = hpf_gamma[i,j] / 2 / ((hpf_gamma[i,j] / 2)**2 + detune**2)
+                    #print('true')
+                    #print(factor[i,j])
         return factor
     
     
