@@ -9,9 +9,9 @@
 # 
 # Created: Mon Oct  9 10:16:45 2017 (-0500)
 # Version: 
-# Last-Updated: Sun Oct 15 15:20:44 2017 (-0500)
+# Last-Updated: Sun Oct 15 17:20:35 2017 (-0500)
 #           By: yulu
-#     Update #: 165
+#     Update #: 215
 # 
 
 
@@ -65,7 +65,7 @@ def runSimu(Dline,
     numSteps = int(maxSimulationTime / dt)
 
     
-    autoStop = False
+    autoStop = True
     breakIdx = 0
     for i in range(numSteps):
         if i == 0:
@@ -74,6 +74,11 @@ def runSimu(Dline,
             popG['F2'] = [p.pop_Ground['F2']]
             for f in p.eStates:
                 popE[f] = [p.pop_Excited[f]]
+            maxF1 = popG['F1'][0][0]
+            minF1 = popG['F1'][0][0]
+            checkKey = list(popE.keys())[-1]
+            maxE = popE[checkKey]
+            minE = maxE
         else:
             newPopG = p.calGroundPop(popG, popE, i-1, I1, I2, detune1, detune2, dt)
             newPopE = p.calExcitedPop(popG, popE, i-1, I1, I2, detune1, detune2, dt)
@@ -87,17 +92,40 @@ def runSimu(Dline,
                 print("Total population: ", unitCheck, " off too much, cycle: ", i)
                 return 0
 
-            # Check if steady state reached, then auto break loop 
+            # Check if steady state reached, then auto break loop
+            if autoStop:
+                changeIndicator = False
+                if (newPopE[checkKey][0] > maxE).any():
+                    maxE = np.array([max(x, y) for x, y in zip(maxE, newPopE[checkKey][0])])
+                    changeIndicator = True
+                elif (newPopE[checkKey][0] < minE).any():
+                    minE = np.array([min(x, y) for x, y in zip(minE, newPopE[checkKey][0])])
+                    changeIndicator = True
+                else:
+                    pass
+                '''
+                if (newPopG['F1'][0] > maxF1).any():
+                    maxF1 = np.array([max(x, y) for x,y in zip(maxF1, newPopG['F1'][0])])
+                    changeIndicator = True
+                if (minF1 > 1e-6).any() and (newPopG['F1'][0] < minF1).any():
+                    minF1 = np.array([min(x, y) for x,y in zip(minF1, newPopG['F1'][0])])
+                    changeIndicator = True
+                '''
+                if not changeIndicator:
+                    breakIdx = i + int(5e-6 / dt)
+                    autoStop = False
+            ###
+            '''
             if autoStop and i > 10 and (abs(np.average(popG['F2'][i-10:i-5])- np.average(popG['F2'][i-5:i])) < 1e-6).all() :
                 breakIdx = i - 5 + int(5e-6 / dt) # add extral 5 us to simulate 
                 autoStop = False
-                
+            '''
+            ### 
             if i == breakIdx:
                 print('\n[*] Steady state reached ! Auto stop ...')
                 autoStop = True
                 break
     clock = np.linspace(0, dt * breakIdx, breakIdx+1) if breakIdx else np.linspace(0, maxSimulationTime, numSteps) # in seconds 
-    print("breakIdx:", breakIdx, "clock", len(clock))
     return (clock, popG, popE)
 
 
@@ -108,21 +136,24 @@ def findSteadyState(clock, popGround, popExcited):
     for each ground and excited hpf states
     """
 
-    try:
-        states = popExcited['F1']
-    except KeyError:
-        states = popExcited['F2']
-
-    states = popGround['F2']
+    maxF1 = popGround['F1'][0][0]
+    minF1 = popGround['F1'][0][0]
+    
     steadyIdx = 0
-    for i in range(len(clock)):
+    for i in range(1, len(clock)):
         
-        if i <10:
-            pass
+        update = False
+        if (maxF1 < popGround['F1'][i][0]).any():
+            maxF1 = np.array([max(x, y) for x, y in zip(maxF1, popGround['F1'][i][0])])
+            update = True
+        elif (minF1 > 1e-6).any() and  (minF1 > popGround['F1'][i][0]).any():
+            minF1 = np.array([min(x, y) for x,y in zip(minF1, popGround['F1'][i][0])])
+            update = True
         else:
-            if (abs(np.average(states[i-5:i]) - np.average(states[i:i+5])) < 1e-6).all():
-               steadyIdx = i
-               break
+            pass
+        if not update:
+            steadyIdx = i
+            break
     steadyG = {}
     steadyE = {}
     for key in popExcited:

@@ -7,4 +7,4 @@ I2:                            6   # [mW/cm^2]  laser intensity corresponding to
 detune1:    		       0   # [Hz]  laser detune corresponding to polarization1
 detune2:                       0   # [Hz]  laser detune corresponding to polarization1
 dt:                          10e-9    # [s]  simulation time step size 
-maxSimulationTime:           50e-6    # [s]  max simulation time, auto stop if rearch steady state
+maxSimulationTime:           1000e-6    # [s]  max simulation time, auto stop if rearch steady state
