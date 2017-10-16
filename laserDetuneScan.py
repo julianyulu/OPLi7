@@ -13,17 +13,17 @@
 # 
 # Created: Tue Oct 10 11:29:11 2017 (-0500)
 # Version: 
-# Last-Updated: Sun Oct 15 22:13:28 2017 (-0500)
+# Last-Updated: Sun Oct 15 22:23:14 2017 (-0500)
 #           By: yulu
-#     Update #: 15
+#     Update #: 18
 # 
 
-
+import sys
 import numpy as np
 from functions import readInput, runSimu, nicePrintStates
 from plot import plotDetuneScan
 
-def main():
+def main(inFile):
     """
     Simulate specified optical pumping process under different
     laser frequency detune. 
@@ -33,12 +33,8 @@ def main():
     """
             
     # load input parameters 
-    try:
-        inputParams = readInput("./laserDetuneScan.in")
-    except FileNotFoundError:
-        print("No file 'laserDetuneScan.in' avaliable in ./")
-        raise FileNotFoundError
-    
+    inputParams = readInput(inFile)
+        
     startD = inputParams.get('startDetune')
     endD = inputParams.get('endDetune')
     dD = inputParams.get('dDetune')
@@ -78,4 +74,4 @@ def main():
     plotDetuneScan(laserDetune, steadyPopG, steadyPopE, steadyTime)
     
 if __name__ == '__main__':
-    main()
+    main(sys.stdin)

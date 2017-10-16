@@ -7,16 +7,21 @@ FILES :=				\
 	singleRun.py			\
 	laserDetuneScan.py		\
 	laserIntensityScan.py		\
-
+	singleRun.in			\
+	laserIntensityScan.in		\
+	laserDetuneScan.in		\
 
 single: 
-	python3 singleRun.py
+	python3 singleRun.py <  singleRun.in
 
 intensity:
-	python3 laserIntensityScan.py
+	python3 laserIntensityScan.py < laserIntensityScan.in
 
 detune:
-	python3 laserDetuneScan.py
+	python3 laserDetuneScan.py < laserDetuneScan.in
+
+repeat:
+	python3 repeatPaperResult.py < repeatPaperResult.in
 
 
 check:

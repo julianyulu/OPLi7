@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Sun Oct 15 15:17:24 2017 (-0500)
+# Last-Updated: Sun Oct 15 22:39:13 2017 (-0500)
 #           By: yulu
-#     Update #: 402
+#     Update #: 403
 # 
 
 import numpy as np
@@ -137,7 +137,7 @@ class optPumping:
         from constant import h, e0, c
         Ueg = np.sqrt(trans * self.dipoleFactor)
         return Ueg * np.sqrt(2 * I /( e0 * c)) / h
-    
+            
     def detuneFactor(self, trans, detune):
         """
         Calculate the detune factor f = gamma / 2 / ((gamma / 2)^2 + delta^2 for 

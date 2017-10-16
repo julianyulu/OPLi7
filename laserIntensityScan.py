@@ -11,16 +11,16 @@
 # 
 # Created: Mon Oct  9 23:00:53 2017 (-0500)
 # Version: 
-# Last-Updated: Sun Oct 15 22:15:29 2017 (-0500)
+# Last-Updated: Sun Oct 15 22:24:09 2017 (-0500)
 #           By: yulu
-#     Update #: 32
+#     Update #: 34
 # 
-
+import sys
 import numpy as np
 from functions import readInput, runSimu, nicePrintStates
 from plot import plotIntensityScan
 
-def main():
+def main(inFile):
     """
     Simulate specified optical pumping process under different
     laser intensity. 
@@ -30,12 +30,9 @@ def main():
     """
     
     # load input parameters 
-    try:
-        inputParams = readInput("./laserIntensityScan.in")
-    except FileNotFoundError:
-        print("No file 'laserIntensityScan.in' avaliable in ./")
-        raise FileNotFoundError
-
+    
+    inputParams = readInput(inFile)
+    
     startI = inputParams.get('startI')
     endI = inputParams.get('endI')
     dI = inputParams.get('dI')
@@ -76,4 +73,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.stdin)

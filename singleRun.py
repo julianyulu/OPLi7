@@ -11,16 +11,16 @@
 # 
 # Created: Mon Oct  9 10:28:14 2017 (-0500)
 # Version: V1.0
-# Last-Updated: Sun Oct 15 22:02:12 2017 (-0500)
+# Last-Updated: Sun Oct 15 23:35:09 2017 (-0500)
 #           By: yulu
-#     Update #: 86
+#     Update #: 95
 # 
 
-
+import sys
 from plot import plotPop
 from functions import readInput, runSimu, nicePrintStates
 
-def main():
+def main(inFile):
     """
     Run single fix parameter simultion
     simulation parameters should be specified in singleRun.in
@@ -29,14 +29,9 @@ def main():
     """
     
     # load input parameters 
-    try:
-        inputParams = readInput("./singleRun.in")
-    except FileNotFoundError:
-        print("No file 'singleRun.in' avaliable in ./")
-        raise FileNotFoundError
-
+    inputParams = readInput(inFile)
+    
     clock, popG, popE, steadyIdx  = runSimu(**inputParams)
-    print("\n[*] Steady population reached at {:1.2f} us".format(clock[steadyIdx] *1e6))
     
     params = {
         "clock": clock,
@@ -61,14 +56,12 @@ def main():
 
     plotPop(**params)
     
+    
 
 if __name__ == '__main__':
-    main()
-
-    #Below for reading system stdin
-    #
+    main(sys.stdin)
     #infile, _, _ = select.select([sys.stdin], [], [], 3)
     #if infile:
-    #    main(sys.stdin)
+    #    
     #else:
     #    main()
