@@ -11,14 +11,14 @@
 # 
 # Created: Mon Oct  9 10:28:14 2017 (-0500)
 # Version: V1.0
-# Last-Updated: Wed Oct 11 17:04:19 2017 (-0500)
-#           By: superlu
-#     Update #: 77
+# Last-Updated: Sun Oct 15 22:02:12 2017 (-0500)
+#           By: yulu
+#     Update #: 86
 # 
 
 
 from plot import plotPop
-from functions import readInput, runSimu, findSteadyState, nicePrintStates
+from functions import readInput, runSimu, nicePrintStates
 
 def main():
     """
@@ -35,8 +35,9 @@ def main():
         print("No file 'singleRun.in' avaliable in ./")
         raise FileNotFoundError
 
-    clock, popG, popE = runSimu(**inputParams)
-    print("\n[*] Total simulation time: {:1.2f} us".format(clock[-1] * 1e6))
+    clock, popG, popE, steadyIdx  = runSimu(**inputParams)
+    print("\n[*] Steady population reached at {:1.2f} us".format(clock[steadyIdx] *1e6))
+    
     params = {
         "clock": clock,
         "Dline":inputParams.get('Dline'),
@@ -49,13 +50,14 @@ def main():
         "popE": popE,
         "saveFig": True}
 
-    t, steadyG, steadE = findSteadyState(clock, popG, popE)
-    if t == 0:
-        print("\nNo steady state reached, extend the simulation time\nif you want to see it saturates\n")
-    else:
-        print("\nTime for reaching steady state: {:2.2f} us\n".format(t * 1e6))
-        
+    
+    if steadyIdx:
+        print("\nTime for reaching steady state: {:2.2f} us\n".format(clock[steadyIdx] * 1e6))
+        steadyG = {'F1': popG['F1'][steadyIdx],
+                   'F2': popG['F2'][steadyIdx]}
         nicePrintStates(steadyG)
+    else:
+        print("\nNo steady state reached, extend the simulation time\nif you want to see it saturates\n")
 
     plotPop(**params)
     
