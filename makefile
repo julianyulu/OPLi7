@@ -16,7 +16,7 @@ intensity:
 	python3 laserIntensityScan.py
 
 detune:
-	python3 laserIntensityScan.py
+	python3 laserDetuneScan.py
 
 
 check:

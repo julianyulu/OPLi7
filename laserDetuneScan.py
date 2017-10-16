@@ -13,14 +13,14 @@
 # 
 # Created: Tue Oct 10 11:29:11 2017 (-0500)
 # Version: 
-# Last-Updated: Tue Oct 10 22:25:09 2017 (-0500)
+# Last-Updated: Sun Oct 15 22:13:28 2017 (-0500)
 #           By: yulu
-#     Update #: 8
+#     Update #: 15
 # 
 
 
 import numpy as np
-from functions import readInput, runSimu, findSteadyState, nicePrintStates
+from functions import readInput, runSimu, nicePrintStates
 from plot import plotDetuneScan
 
 def main():
@@ -47,32 +47,32 @@ def main():
     laserDetune = np.linspace(startD, endD, int((endD - startD) / dD))
         
     for i,D in enumerate(laserDetune):
-        clock, popG, popE = runSimu(
+        clock, popG, popE, steadyIdx = runSimu(
             Dline = inputParams['Dline'],
             excited_hpf_state = inputParams['excited_hpf_state'],
             I1 = inputParams['I1'],
             I2 = inputParams['I2'],
             detune1 = D if scanLaserId == 'I1' else inputParams['detune1'],
             detune2 = D if scanLaserId == 'I2' else inputParams['detune2'],
-            polorization1 = inputParams['polorization1'],
-            polorization2 = inputParams['polorization2'],
+            polarization1 = inputParams['polarization1'],
+            polarization2 = inputParams['polarization2'],
             maxSimulationTime = inputParams['maxSimulationTime'],
             dt = inputParams['dt']
             )
 
         if i == 0:
-            steadyPopG = {'F1': [popG['F1'][-1]],
-                          'F2': [popG['F2'][-1]]}
+            steadyPopG = {'F1': [popG['F1'][steadyIdx]],
+                          'F2': [popG['F2'][steadyIdx]]}
             steadyPopE = {}
             for key in popE.keys():
-                steadyPopE[key] = [popE[key]]
-            steadyTime = [clock[-1]]
+                steadyPopE[key] = [popE[key][steadyIdx]]
+            steadyTime = [clock[steadyIdx]]
         else:
-            steadyPopG['F1'].append(popG['F1'][-1])
-            steadyPopG['F2'].append(popG['F2'][-1])
+            steadyPopG['F1'].append(popG['F1'][steadyIdx])
+            steadyPopG['F2'].append(popG['F2'][steadyIdx])
             for key in popE.keys():
-                steadyPopE[key].append(popE[key])
-            steadyTime.append(clock[-1])
+                steadyPopE[key].append(popE[key][steadyIdx])
+            steadyTime.append(clock[steadyIdx])
 
     steadyTime = np.array(steadyTime)
     plotDetuneScan(laserDetune, steadyPopG, steadyPopE, steadyTime)
