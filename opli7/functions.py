@@ -9,13 +9,13 @@
 # 
 # Created: Mon Oct  9 10:16:45 2017 (-0500)
 # Version: 
-# Last-Updated: Sun Oct 15 23:43:30 2017 (-0500)
+# Last-Updated: Wed Nov 14 00:39:20 2018 (-0600)
 #           By: yulu
-#     Update #: 269
+#     Update #: 273
 # 
 
 
-from optPumping import optPumping
+from optPumping import OptPumping
 import numpy as np
 
 def readInput(infile):
@@ -55,7 +55,7 @@ def runSimu(Dline,
          dt):
         
     
-    p = optPumping(Dline, excited_hpf_state, polarization1, polarization2)
+    p = OptPumping(Dline, excited_hpf_state, polarization1, polarization2)
     I1 = I1 * 10 # Convert mW/cm^2 to W/m^2
     I2 = I2 * 10 
     # Initialization of population dictionary 

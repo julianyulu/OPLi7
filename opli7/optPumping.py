@@ -9,15 +9,15 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Sun Oct 15 22:39:13 2017 (-0500)
+# Last-Updated: Wed Nov 14 00:29:51 2018 (-0600)
 #           By: yulu
-#     Update #: 403
+#     Update #: 404
 # 
 
 import numpy as np
 
 
-class optPumping:
+class OptPumping:
     def __init__(self, Dline, excitedF, pumpPol1, pumpPol2):
         
         # Load D line transition database and scale natrual linewidth
