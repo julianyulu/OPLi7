@@ -9,9 +9,9 @@
 # 
 # Created: Sun Sep 17 16:36:41 2017 (-0500)
 # Version: 
-# Last-Updated: Wed Nov 14 00:29:51 2018 (-0600)
+# Last-Updated: Wed Nov 14 23:11:08 2018 (-0600)
 #           By: yulu
-#     Update #: 404
+#     Update #: 410
 # 
 
 import numpy as np
@@ -22,22 +22,22 @@ class OptPumping:
         
         # Load D line transition database and scale natrual linewidth
         # ---------------------------------------------------------------------------
-        from constant import gamma 
+        from .constant import gamma 
         if Dline == 'D1':
             if excitedF == 'F1':
                 self.gamma = gamma * 3 / 8 
-                from TransitionStrength import TransStrengthD1_toF1 as TransStrength
-                from TransitionStrength import DecayStrengthD1_toF1 as DecayStrength
+                from .TransitionStrength import TransStrengthD1_toF1 as TransStrength
+                from .TransitionStrength import DecayStrengthD1_toF1 as DecayStrength
             elif excitedF == 'F2':
                 self.gamma = gamma * 5 / 8 
-                from TransitionStrength import TransStrengthD1_toF2 as TransStrength
-                from TransitionStrength import DecayStrengthD1_toF2 as DecayStrength
+                from .TransitionStrength import TransStrengthD1_toF2 as TransStrength
+                from .TransitionStrength import DecayStrengthD1_toF2 as DecayStrength
             else:
                 print("D1 line has not excited hpf state ", Dline)
         elif Dline == 'D2':
             self.gamma = gamma 
-            from TransitionStrength import TransStrengthD2 as TransStrength
-            from TransitionStrength import DecayStrengthD2 as DecayStrength
+            from .TransitionStrength import TransStrengthD2 as TransStrength
+            from .TransitionStrength import DecayStrengthD2 as DecayStrength
         else:
             print('Unavaliable D line transition !')
 
@@ -102,7 +102,7 @@ class OptPumping:
         Gamma = w^3/(3*pi*e0*hBar*c^3) * sum(all transition matrix squared) * scale factor
         Returned factor is for Metcalf yellow book, Ueg^2
         """
-        from constant import hBar, e0,c
+        from .constant import hBar, e0,c
         totTransElement  = 0 
         for trans in self.decayMatrix.transition:
             for pol in self.pol:
@@ -124,7 +124,7 @@ class OptPumping:
         """
         Calculate Einstein A coefficient based on Ueg^2
         """
-        from constant import hBar, e0 ,c
+        from .constant import hBar, e0 ,c
         einsteinAFactor = (2 * np.pi * self.freq)**3 / (3 * np.pi * e0 * hBar * c**3)
         einsteinA = einsteinAFactor * (trans * self.dipoleFactor)
         return einsteinA
@@ -134,7 +134,7 @@ class OptPumping:
         Calculate rabi frequency based on light intensity 
         and relative transition strength from Metcalf's yellow book
         """
-        from constant import h, e0, c
+        from .constant import h, e0, c
         Ueg = np.sqrt(trans * self.dipoleFactor)
         return Ueg * np.sqrt(2 * I /( e0 * c)) / h
             
@@ -143,7 +143,7 @@ class OptPumping:
         Calculate the detune factor f = gamma / 2 / ((gamma / 2)^2 + delta^2 for 
         light absorption rate: R = Omega^2 * f
         """
-        from constant import e0, hBar, c
+        from .constant import e0, hBar, c
         # Calculate natural line width for hpf states
         hpf_gamma = (2 * np.pi * self.freq)**3 /(3 * np.pi * e0 * hBar * c**3) * trans * self.dipoleFactor
         x, y = hpf_gamma.shape

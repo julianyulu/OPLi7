@@ -10,9 +10,9 @@
 # 
 # Created: Thu Oct  5 17:52:51 2017 (-0500)
 # Version: V1.0
-# Last-Updated: Sun Oct 15 23:53:07 2017 (-0500)
+# Last-Updated: Thu Nov 15 00:02:07 2018 (-0600)
 #           By: yulu
-#     Update #: 89
+#     Update #: 90
 # 
 
 
@@ -58,7 +58,7 @@ def plotPop( clock,  Dline, eStates, polarization1, polarization2, I1, I2, popG,
             os.mkdir("img")
         fileName = "./img/Dline" + "_to" + excitedState + "_" + polarization1 + "_" + polarization2 + ".png"
         fig.savefig(fileName)
-        print("[*]plots saved in ./img/" + fileName)
+        print("[*]plots saved in " + fileName)
     plt.show()    
 
 
