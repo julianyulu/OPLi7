@@ -9,40 +9,23 @@
 # 
 # Created: Sun Oct 15 23:29:34 2017 (-0500)
 # Version: 
-# Last-Updated: Sun Oct 15 23:51:19 2017 (-0500)
+# Last-Updated: Thu Nov 15 15:58:16 2018 (-0600)
 #           By: yulu
-#     Update #: 6
+#     Update #: 13
 # 
 
 
-from optPumping import optPumping
+
 import numpy as np
 import sys
 
-
-def readInput(infile):
-    """
-    read input from a file as a dictionary
-    """
-    params = {}
-    # if it is a sys.stdin input 
-    if str(type(infile)) == "<class '_io.TextIOWrapper'>":
-        for line in infile:
-            x = line.rstrip().split(':')
-            try:
-                params[x[0].strip()] = float(x[1].split('#')[0].strip())
-            except ValueError:
-                params[x[0].strip()] = x[1].split('#')[0].strip()
-    # else read from a input file 
-    else:
-        with open(infile, 'r') as f:
-            for line in f:
-                x = line.rstrip().split(':')
-                try:
-                    params[x[0].strip()] = float(x[1].split('#')[0].strip())
-                except ValueError:
-                    params[x[0].strip()] = x[1].split('#')[0].strip()
-    return params
+try:
+    from opli7 import OptPumping
+    from opli7 import Simulator
+except ModuleNotFoundError:
+    sys.path.insert(0, '../')
+    from opli7 import OptPumping
+    from opli7 import Simulator
 
 
 def runSimu(Dline,
@@ -57,7 +40,7 @@ def runSimu(Dline,
          dt):
         
     
-    p = optPumping(Dline, excited_hpf_state, polarization1, polarization2)
+    p = OptPumping(Dline, excited_hpf_state, polarization1, polarization2)
     I1 = I1 * 10 # Convert mW/cm^2 to W/m^2
     I2 = I2 * 10 
     # Initialization of population dictionary 
@@ -72,9 +55,9 @@ def runSimu(Dline,
     breakIdx = 0
 
     I10 = I1 * 10 # Convert mW/cm^2 to W/m^2
-    I20 = I2 * 10 
+    I20 = I2 * 10
+    
     for i in range(numSteps):
-        
         t = i * dt * 1e6
         I1 = I10 * np.exp(-2 * ((t - 20) /5)**2)
         I2 = I20 * np.exp(-2 * ((t - 20) /5)**2)
@@ -115,15 +98,6 @@ def runSimu(Dline,
     clock = np.linspace(0, dt * breakIdx, breakIdx+1) if breakIdx else np.linspace(0, maxSimulationTime, numSteps) # in seconds 
     return (clock, popG, popE, steadyIdx)
 
-def nicePrintStates(pop):
-    fState = list(pop.keys())
-    for f in fState:
-        print("\nhpf state:", f)
-        print("====================")
-        for i,p in enumerate(pop[f][0]):
-            mF = -int(f[-1]) + i
-            print("mF = {0:1d}{1:10.4f}".format(mF, p))
-        print("\n")
 
 
 def plotPop_special( clock,  Dline, eStates, polarization1, polarization2, I1, I2, popG, popE, saveFig = True):
@@ -184,7 +158,7 @@ def main(inFile):
     """
     
     # load input parameters 
-    inputParams = readInput(inFile)
+    inputParams = Simulator.parseInput(inFile)
     
     clock, popG, popE, steadyIdx  = runSimu(**inputParams)
     
@@ -205,7 +179,7 @@ def main(inFile):
         print("\nTime for reaching steady state: {:2.2f} us\n".format(clock[steadyIdx] * 1e6))
         steadyG = {'F1': popG['F1'][steadyIdx],
                    'F2': popG['F2'][steadyIdx]}
-        nicePrintStates(steadyG)
+        Simulator.nicePrintStates(steadyG)
     else:
         print("\nNo steady state reached, extend the simulation time\nif you want to see it saturates\n")
 

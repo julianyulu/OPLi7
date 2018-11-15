@@ -11,19 +11,8 @@ FILES :=				\
 	laserIntensityScan.in		\
 	laserDetuneScan.in		\
 
-single: 
-	python3 singleRun.py <  singleRun.in
-
-intensity:
-	python3 laserIntensityScan.py < laserIntensityScan.in
-
-detune:
-	python3 laserDetuneScan.py < laserDetuneScan.in
-
-repeat:
-	python3 repeatPaperResult.py < repeatPaperResult.in
-
-
+test:
+	python3 examples/example_single_run.py
 check:
 	@not_found=0;                             \
     for i in $(FILES);                            \

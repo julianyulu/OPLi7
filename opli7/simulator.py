@@ -9,16 +9,21 @@
 # 
 # Created: Wed Nov 14 00:34:58 2018 (-0600)
 # Version: 
-# Last-Updated: Thu Nov 15 00:00:18 2018 (-0600)
+# Last-Updated: Thu Nov 15 16:05:23 2018 (-0600)
 #           By: yulu
-#     Update #: 76
+#     Update #: 107
 # 
 from .optPumping import OptPumping
-from .plot import plotPop
+from .plot import plotPopulation, plotParameterScan
 import numpy as np
 import pickle
 
 class Simulator:
+    """Optical Pumping Simulator 
+    
+    Taking parameter configurations and run the simulation 
+    through time steps under the parameters
+    """
     
     def __init__(self,
                  Dline = 'D1',
@@ -71,7 +76,7 @@ class Simulator:
                     params[x[0].strip()] = float(x[1].split('#')[0].strip())
                 except ValueError:
                     params[x[0].strip()] = x[1].split('#')[0].strip()
-                # else read from a input file 
+        # else read from a input file 
         else:
             with open(infile, 'r') as f:
                 for line in f:
@@ -82,15 +87,15 @@ class Simulator:
                         params[x[0].strip()] = x[1].split('#')[0].strip()
                         
         return params
-
+    
     def dic2str(self):
         temp = []
         for key, value in self.__dict__.items():
-            temp.append(':\t'.join([str(key), str(value)]))
+            temp.append('{0:>20s}\t{1:<10s}'.format(str(key), str(value)))
         return '\n'.join(temp)
                     
-
-    def nicePrintStates(self, pop):
+    @staticmethod
+    def nicePrintStates(pop):
         """
         nicely print the final states population to stdout
         """
@@ -162,23 +167,11 @@ class Simulator:
         clock = np.linspace(0, self.dt * breakIdx, breakIdx+1) if breakIdx else np.linspace(0, self.maxSimulationTime, self.numSteps) # in seconds 
         return (clock, popG, popE, steadyIdx)
 
-    def run(self, verbose = True, saveFig = True, saveData = False):
+    def run(self, verbose = True, plot = True, saveFig = True, saveData = False):
         
         clock, popG, popE, steadyIdx  = self.simulate()
-    
-        params = {
-            "clock": clock,
-            "Dline": self.Dline,
-            "eStates": [self.excited_hpf_state],
-            "polarization1": self.polarization1,
-            "polarization2": self.polarization2,
-            "I1": self.I1,
-            "I2": self.I2,
-            "popG": popG,
-            "popE": popE,
-            "saveFig": saveFig}
 
-        if verbose:
+        if verbose: # print to terminal the steady state info 
             if steadyIdx:
                 print("\nTime for reaching steady state: {:2.2f} us\n".format(clock[steadyIdx] * 1e6))
                 steadyG = {'F1': popG['F1'][steadyIdx],
@@ -187,8 +180,7 @@ class Simulator:
             else:
                 print("\nNo steady state reached, extend the simulation time\nif you want to see it saturates\n")
 
-
-        if saveData:
+        if saveData: # save simulation data to pickle file
             toSave = {'params': self.__dict__,
                       'clock': clock,
                       'population_ground': popG,
@@ -197,6 +189,55 @@ class Simulator:
             with open('./simulator_output.pickle', 'wb+') as f:
                 pickle.dump(toSave, f)
                 print("Simulator data save in './simulator_output.pickle'")
+        if plot:
+            params = {
+                "clock": clock,
+                "Dline": self.Dline,
+                "eStates": [self.excited_hpf_state],
+                "polarization1": self.polarization1,
+                "polarization2": self.polarization2,
+                "I1": self.I1,
+                "I2": self.I2,
+                "popG": popG,
+                "popE": popE,
+                "saveFig": saveFig}
+            
+            plotPopulation(**params)
+
+    def scan(self, scanValues, scanKey = None):
+        """
+        Scan one of inpute parameters and extract the population of ground state 
+        when reaching the steady state
+        """
+        print("OPLI Simulator parameter scan module\n--------------------------")
+        print("Scanning parameter: %s" %scanKey)
+        print("Simulation rounds: %d" %len(scanValues))
+        if not (scanKey and scanKey in self.__dict__):
+            print("Provided scan key *%s*not in parameter space" %(scanKey))
+            print("Avaliable scannable keys are: ", list(self.__dict__.keys()))
+            print("Exciting...")
+            return
+        
+        for i,val in enumerate(scanValues):
+            self.__dict__[scanKey] = val
+            clock, popG, popE, steadyIdx  = self.simulate()
+            
+            if i == 0:
+                steadyPopG = {'F1': [popG['F1'][steadyIdx]],
+                              'F2': [popG['F2'][steadyIdx]]}
+                steadyPopE = {}
+                for key in popE.keys():
+                    steadyPopE[key] = [popE[key][steadyIdx]]
+                    steadyTime = [clock[steadyIdx]]
                 
-        plotPop(**params)
-    
+            else:
+                steadyPopG['F1'].append(popG['F1'][steadyIdx])
+                steadyPopG['F2'].append(popG['F2'][steadyIdx])
+                for key in popE.keys():
+                    steadyPopE[key].append(popE[key][steadyIdx])
+                steadyTime.append(clock[steadyIdx])
+                    
+        steadyTime = np.array(steadyTime)
+        plotParameterScan(scanKey, scanValues, steadyPopG, steadyPopE, steadyTime)
+        
+        

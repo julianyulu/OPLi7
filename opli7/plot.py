@@ -10,22 +10,20 @@
 # 
 # Created: Thu Oct  5 17:52:51 2017 (-0500)
 # Version: V1.0
-# Last-Updated: Thu Nov 15 00:02:07 2018 (-0600)
+# Last-Updated: Thu Nov 15 15:12:52 2018 (-0600)
 #           By: yulu
-#     Update #: 90
+#     Update #: 101
 # 
+import matplotlib.pyplot as plt
+import os
 
 
-
-def plotPop( clock,  Dline, eStates, polarization1, polarization2, I1, I2, popG, popE, saveFig = True):
+def plotPopulation( clock,  Dline, eStates, polarization1, polarization2, I1, I2, popG, popE, saveFig = True):
     """
     plot population distrubution for ground and excited states
     and specify condition in the title 
     optionally save the figure to ./img/ folder
     """
-    import matplotlib.pyplot as plt
-    import os
-    
     excitedState = '2P3halves(unresolved)' if Dline == 'D2' else eStates[0]
     lw = 3
     
@@ -61,7 +59,51 @@ def plotPop( clock,  Dline, eStates, polarization1, polarization2, I1, I2, popG,
         print("[*]plots saved in " + fileName)
     plt.show()    
 
+def plotParameterScan(scanPara, scanValues, steadyPopG, steadyPopE, steadyTime, saveFig = True):
+        
+    lw = 2 # plot linewidth 
+    fig = plt.figure(figsize = (15, 10), dpi=150)
+    
+    # Ground states
+    ax1 = fig.add_subplot(211)
+    for f in ['F1', 'F2']:
+        fNum = int(f[-1])
+        for i in range(2 * fNum + 1):
+            ax1.plot(scanValues, [x[0][i] for x in steadyPopG[f]], "*--", \
+                     label = "F=" + str(fNum) + ", m=" + str(-fNum+ i), linewidth = lw)
+    ax1.legend(fontsize = 12)
+    ax1.set_ylabel('Steady State Population')
+    ax1.set_xlabel('%s[default unit]' %scanPara)
+    ax1.set_title('Optical pumping parameter scan: %s' %scanPara)
+    # # Excited states
+    # print(steadyPopG)
+    # ax2 = fig.add_subplot(312)
+    # for f in list(steadyPopE.keys()):#p.eStates:
+    #     fNum = int(f[-1])
+    #     for i in range(2 * fNum + 1):
+    #         ax2.plot(scanValues, [x[0][i] for x in steadyPopE[f]], "-",\
+    #                  label = "F=" + str(fNum) + ", m=" + str(-fNum+ i), linewidth = lw)
+    # ax2.set_xlabel('laser intensity [mw/cm^2]')
+    # ax2.legend(fontsize = 12)
 
+    # Steady states time
+    ax3 = fig.add_subplot(212)
+    ax3.plot(scanValues, steadyTime * 1e6, '^--')
+    ax1.set_xlabel('%s[default unit]' %scanPara)
+    ax3.set_ylabel('Time to reach steady state [us]')
+
+    if saveFig:
+        if not os.path.isdir("./img/"):
+            os.mkdir("img")
+        fileName = "./img/laser_intensity_scan.png"
+        fig.savefig(fileName)
+        print("[*]plots saved in ",  fileName)
+    
+    plt.show()
+
+
+
+    
 def plotIntensityScan(laserInten, steadyPopG, steadyPopE, steadyTime, saveFig = True):
     import matplotlib.pyplot as plt
     import os

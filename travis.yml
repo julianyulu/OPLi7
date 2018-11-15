@@ -23,5 +23,5 @@ before_script:
 
 script:
   - ls -al
-  - python3 main_travis.py
   
+- python3 travis.py
