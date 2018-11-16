@@ -10,9 +10,9 @@
 # 
 # Created: Thu Oct  5 17:52:51 2017 (-0500)
 # Version: V1.0
-# Last-Updated: Thu Nov 15 15:12:52 2018 (-0600)
+# Last-Updated: Fri Nov 16 00:51:57 2018 (-0600)
 #           By: yulu
-#     Update #: 101
+#     Update #: 109
 # 
 import matplotlib.pyplot as plt
 import os
@@ -25,22 +25,22 @@ def plotPopulation( clock,  Dline, eStates, polarization1, polarization2, I1, I2
     optionally save the figure to ./img/ folder
     """
     excitedState = '2P3halves(unresolved)' if Dline == 'D2' else eStates[0]
-    lw = 3
+    lw = 2
     
     fig = plt.figure(figsize = (15, 15), dpi = 150)
     ax1 = fig.add_subplot(211)
     ax2 = fig.add_subplot(212)
     
-    for f in ['F1', 'F2']:# Ground states
+    for f, fmt in zip(['F1', 'F2'], ['-', '--']):# Ground states
         fNum = int(f[-1])
         for i in range(2 * fNum + 1):
-            ax1.plot(clock * 1e6, [x[0][i] for x in popG[f]], "-", \
+            ax1.plot(clock * 1e6, [x[0][i] for x in popG[f]], fmt, \
                      label = "F=" + str(fNum) + ", m=" + str(-fNum+ i), linewidth = lw)
     ax1.set_title('Li7 ' +  Dline + ' transition ground(top) and excited(bottom)  hpf states population\n' \
                   + 'F1 -> ' + excitedState + ': ' + polarization1 + ' pol.  ' + str(I1) + ' mW/cm2 || ' \
                   + 'F2 -> ' + excitedState + ': ' + polarization2 + ' pol.  ' + str(I2) + ' mW/cm2', fontsize = 15)
     ax1.set_xlabel('Time [us]')
-    ax1.legend(fontsize = 12)
+    ax1.legend(fontsize = 10)
 
     
     for f in list(popE.keys()):#p.eStates:
@@ -49,7 +49,7 @@ def plotPopulation( clock,  Dline, eStates, polarization1, polarization2, I1, I2
             ax2.plot(clock * 1e6, [x[0][i] for x in popE[f]], "-",\
                      label = "F=" + str(fNum) + ", m=" + str(-fNum+ i), linewidth = lw)
     ax2.set_xlabel('Time [us]')
-    ax2.legend(fontsize = 12)
+    ax2.legend(fontsize = 10)
 
     if saveFig:
         if not os.path.isdir("./img/"):

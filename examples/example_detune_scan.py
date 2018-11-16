@@ -9,9 +9,9 @@
 # 
 # Created: Thu Nov 15 00:03:18 2018 (-0600)
 # Version: 
-# Last-Updated: Thu Nov 15 15:30:57 2018 (-0600)
+# Last-Updated: Fri Nov 16 00:12:07 2018 (-0600)
 #           By: yulu
-#     Update #: 22
+#     Update #: 25
 # 
 
 import sys
@@ -26,9 +26,9 @@ except ModuleNotFoundError:
     
 if __name__ == '__main__':
     s = Simulator(config = './config.in')
+    print("Model Parameters:")
     print(s)
-    #[bug, has dead loop] s.scan(scanKey = 'detune2', scanValues = np.linspace(-20e6, 20e6, 5))
-    s.scan(scanKey = 'detune2', scanValues = np.linspace(-20e6, 20e6, 5))
+    s.scan(scanKey = 'detune2', scanValues = np.linspace(-5e6, 5e6, 6))
     
 
 

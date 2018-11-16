@@ -9,14 +9,15 @@
 # 
 # Created: Wed Nov 14 00:34:58 2018 (-0600)
 # Version: 
-# Last-Updated: Thu Nov 15 16:05:23 2018 (-0600)
+# Last-Updated: Fri Nov 16 00:24:53 2018 (-0600)
 #           By: yulu
-#     Update #: 107
+#     Update #: 152
 # 
 from .optPumping import OptPumping
 from .plot import plotPopulation, plotParameterScan
 import numpy as np
 import pickle
+import sys
 
 class Simulator:
     """Optical Pumping Simulator 
@@ -124,9 +125,13 @@ class Simulator:
         # Initialization of population dictionary 
         popG = {} # Ground states population dictionary, dic of list of 2d array
         popE = {} # Excited states population dictionary, dic of list of 2d array
-        
+
+        print("\nProgress:")
+        iter_5pct_num = self.numSteps * 0.05
         for i in range(self.numSteps):
-        
+            if i % iter_5pct_num == 0:
+                print("%d%%" %int(i/self.numSteps * 100), end = ' ')
+                sys.stdout.flush()
             if i == 0:
                 # Initial states
                 popG['F1'] = [p.pop_Ground['F1']]
@@ -209,7 +214,7 @@ class Simulator:
         Scan one of inpute parameters and extract the population of ground state 
         when reaching the steady state
         """
-        print("OPLI Simulator parameter scan module\n--------------------------")
+        print("\nOPLI Simulator parameter scan module\n--------------------------")
         print("Scanning parameter: %s" %scanKey)
         print("Simulation rounds: %d" %len(scanValues))
         if not (scanKey and scanKey in self.__dict__):
@@ -219,9 +224,9 @@ class Simulator:
             return
         
         for i,val in enumerate(scanValues):
+            print("Round %d" %i, end = ' ')
             self.__dict__[scanKey] = val
             clock, popG, popE, steadyIdx  = self.simulate()
-            
             if i == 0:
                 steadyPopG = {'F1': [popG['F1'][steadyIdx]],
                               'F2': [popG['F2'][steadyIdx]]}
@@ -236,6 +241,8 @@ class Simulator:
                 for key in popE.keys():
                     steadyPopE[key].append(popE[key][steadyIdx])
                 steadyTime.append(clock[steadyIdx])
+            if not steadyIdx:
+                print("\nNo steady state reached in given simulation time, extend the simulation time\nif you want to see it saturates!\n")
                     
         steadyTime = np.array(steadyTime)
         plotParameterScan(scanKey, scanValues, steadyPopG, steadyPopE, steadyTime)
