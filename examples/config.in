@@ -2,8 +2,8 @@ Dline:                         D2   # chose D1 or D2 line to simulate
 excited_hpf_state:             F2   # In case its D1 line, specify the excited hpf F
 polarization1:          sigmaPlus   # polarization for transition from ground F = 1
 polarization2:          sigmaPlus   # polarization for transition from ground F = 2  
-I1:                            1    # [mW/cm^2]  laser intensity corresponding to polarization1
-I2:                            3   # [mW/cm^2]  laser intensity corresponding to polarization1
+I1:                            5    # [mW/cm^2]  laser intensity corresponding to polarization1
+I2:                            0   # [mW/cm^2]  laser intensity corresponding to polarization1
 detune1:    		       0   # [Hz]  laser detune corresponding to polarization1
 detune2:                       0   # [Hz]  laser detune corresponding to polarization1
 dt:                          10e-9    # [s]  simulation time step size 
